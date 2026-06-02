@@ -1,6 +1,6 @@
 /*
 SDLPoP, a port/conversion of the DOS game Prince of Persia.
-Copyright (C) 2013-2025  Dávid Nagy
+Copyright (C) 2013-2023  Dávid Nagy
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,6 +43,7 @@ CREDITS:
 extern short midi_playing; // seg009.c
 extern SDL_AudioSpec* digi_audiospec; // seg009.c
 extern int digi_unavailable; // seg009.c
+extern byte is_sound_on; // seg009.c
 
 static opl3_chip opl_chip;
 static void* instruments_data;
@@ -71,8 +72,8 @@ static float current_midi_tempo_modifier;
 //   The 'Jaffar enters' song has tempo 705882 (maybe this tempo was carefully fine-tuned)?
 // * Intro music: playback speed must match the title appearances/transitions.
 const float midi_tempo_modifiers[58] = {
-		[sound_53_story_3_Jaffar_comes] = -0.03f, // 3% speedup
-		[sound_54_intro_music] = 0.03f, // 3% slowdown
+		[53] = -0.03f, // 3% speedup
+		[54] = 0.03f, // 3% slowdown
 };
 
 // The hardcoded instrument is used as a fallback, if instrument data is not available for some reason.
@@ -112,17 +113,17 @@ bool parse_midi(midi_raw_chunk_type* midi, parsed_midi_type* parsed_midi) {
 		       SDL_SwapBE32(midi->chunk_length));
 		return 0;
 	}
-	word midi_format = SDL_SwapBE16(midi->header.format);
+	word midi_format = SDL_SwapBE16(midi->data.header.format);
 	if (midi_format >= 2) {
 		printf("Warning: Unsupported midi format %d (only type 0 or 1 files are supported)\n", midi_format);
 		return 0;
 	}
-	word num_tracks = SDL_SwapBE16(midi->header.num_tracks);
+	word num_tracks = SDL_SwapBE16(midi->data.header.num_tracks);
 	if (num_tracks < 1) {
 		printf("Warning: Midi sound does not have any tracks.\n");
 		return 0;
 	}
-	int division = SDL_SwapBE16(midi->header.time_division);
+	int division = SDL_SwapBE16(midi->data.header.time_division);
 	if (division < 0) {
 		division = (-(division / 256)) * (division & 0xFF); // Translate time delta from the alternative SMTPE format.
 	}
@@ -130,7 +131,7 @@ bool parse_midi(midi_raw_chunk_type* midi, parsed_midi_type* parsed_midi) {
 
 	parsed_midi->tracks = calloc(1, num_tracks * sizeof(midi_track_type));
 	parsed_midi->num_tracks = num_tracks;
-	midi_raw_chunk_type* next_track_chunk = (midi_raw_chunk_type*) midi->header.tracks; // The first track chunk starts after the header chunk.
+	midi_raw_chunk_type* next_track_chunk = (midi_raw_chunk_type*) midi->data.header.tracks; // The first track chunk starts after the header chunk.
 	byte last_event_type = 0;
 	for (int track_index = 0; track_index < num_tracks; ++track_index) {
 		midi_raw_chunk_type* track_chunk = next_track_chunk;
@@ -140,9 +141,9 @@ bool parse_midi(midi_raw_chunk_type* midi, parsed_midi_type* parsed_midi) {
 			memset(&parsed_midi, 0, sizeof(parsed_midi));
 			return 0;
 		}
-		next_track_chunk = (midi_raw_chunk_type*) (track_chunk->data + (dword) SDL_SwapBE32(track_chunk->chunk_length));
+		next_track_chunk = (midi_raw_chunk_type*) (track_chunk->data.data + (dword) SDL_SwapBE32(track_chunk->chunk_length));
 		midi_track_type* track = &parsed_midi->tracks[track_index];
-		byte* buffer_position = track_chunk->data;
+		byte* buffer_position = track_chunk->data.data;
 		for (;;) {
 			++track->num_events;
 			void* new_track_events = realloc(track->events, track->num_events * sizeof(midi_event_type));
@@ -173,11 +174,11 @@ bool parse_midi(midi_raw_chunk_type* midi, parsed_midi_type* parsed_midi) {
 				case 0xC0: // program change
 				case 0xD0: { // channel aftertouch
 					// Read the channel event.
-					event->channel.channel = event->event_type & 0x0F;
+					event->data.channel.channel = event->event_type & 0x0F;
 					event->event_type &= 0xF0;
-					event->channel.param1 = *buffer_position++;
+					event->data.channel.param1 = *buffer_position++;
 					if (num_channel_event_params == 2) {
-						event->channel.param2 = *buffer_position++;
+						event->data.channel.param2 = *buffer_position++;
 					}
 				}
 					break;
@@ -187,15 +188,15 @@ bool parse_midi(midi_raw_chunk_type* midi, parsed_midi_type* parsed_midi) {
 						case 0xF0: // SysEx
 						case 0xF7: // SysEx split
 							// Read SysEx event
-							event->sysex.length = midi_read_variable_length(&buffer_position);
-							event->sysex.data = buffer_position;
-							buffer_position += event->sysex.length;
+							event->data.sysex.length = midi_read_variable_length(&buffer_position);
+							event->data.sysex.data = buffer_position;
+							buffer_position += event->data.sysex.length;
 							break;
 						case 0xFF: // Meta event
-							event->meta.type = *buffer_position++;
-							event->meta.length = midi_read_variable_length(&buffer_position);
-							event->meta.data = buffer_position;
-							buffer_position += event->meta.length;
+							event->data.meta.type = *buffer_position++;
+							event->data.meta.length = midi_read_variable_length(&buffer_position);
+							event->data.meta.data = buffer_position;
+							buffer_position += event->data.meta.length;
 							break;
 						default:
 							printf("Warning: unknown midi event type 0x%02x (track %d, event %d)\n",
@@ -204,7 +205,7 @@ bool parse_midi(midi_raw_chunk_type* midi, parsed_midi_type* parsed_midi) {
 							return 0;
 					}
 			}
-			if (event->event_type == 0xFF /* meta event */ && event->meta.type == 0x2F /* end of track */) {
+			if (event->event_type == 0xFF /* meta event */ && event->data.meta.type == 0x2F /* end of track */) {
 				break;
 			}
 			if (buffer_position >= (byte*) next_track_chunk) {
@@ -229,12 +230,12 @@ void print_midi_event(int track_index, int event_index, midi_event_type* event) 
 			printf("unknown type (%x)", event->event_type);
 			break;
 		case 0x80: // note off
-			printf("noteoff: ch %d, par %02x|%02x", event->channel.channel, event->channel.param1, event->channel.param2);
+			printf("noteoff: ch %d, par %02x|%02x", event->data.channel.channel, event->data.channel.param1, event->data.channel.param2);
 			break;
 		case 0x90: // note on
-			printf("noteon: ch %d, par %02x|%02x", event->channel.channel, event->channel.param1, event->channel.param2);
+			printf("noteon: ch %d, par %02x|%02x", event->data.channel.channel, event->data.channel.param1, event->data.channel.param2);
 			{
-				float octaves_from_A4 = ((int)event->channel.param1 - 69) / 12.0f;
+				float octaves_from_A4 = ((int)event->data.channel.param1 - 69) / 12.0f;
 				float frequency = powf(2.0f,  octaves_from_A4) * 440.0f;
 				float f_number_float = frequency * (float)(1 << 20) / 49716.0f;
 				int b = (int)(log2f(f_number_float) - 9) & 7;
@@ -243,24 +244,24 @@ void print_midi_event(int track_index, int event_index, midi_event_type* event) 
 			}
 			break;
 		case 0xA0: // aftertouch
-			printf("aftertouch: ch %d, par %x|%x", event->channel.channel, event->channel.param1, event->channel.param2);
+			printf("aftertouch: ch %d, par %x|%x", event->data.channel.channel, event->data.channel.param1, event->data.channel.param2);
 			break;
 		case 0xB0: // controller
-			printf("controller: ch %d, par %x|%x", event->channel.channel, event->channel.param1, event->channel.param2);
+			printf("controller: ch %d, par %x|%x", event->data.channel.channel, event->data.channel.param1, event->data.channel.param2);
 			break;
 		case 0xE0: // pitch bend
-			printf("pitch bend: ch %d, par %x|%x", event->channel.channel, event->channel.param1, event->channel.param2);
+			printf("pitch bend: ch %d, par %x|%x", event->data.channel.channel, event->data.channel.param1, event->data.channel.param2);
 			break;
 		case 0xC0: // program change
-			printf("program change: ch %d, par %x", event->channel.channel, event->channel.param1);
+			printf("program change: ch %d, par %x", event->data.channel.channel, event->data.channel.param1);
 			break;
 		case 0xD0:
-			printf("channel aftertouch: ch %d, par %x", event->channel.channel, event->channel.param1);
+			printf("channel aftertouch: ch %d, par %x", event->data.channel.channel, event->data.channel.param1);
 			break;
 		case 0xF0: // SysEx
-			printf("sysex event (length=%d): ", event->sysex.length);
-			for (int i = 0; i<event->sysex.length; ++i) {
-				printf("%02x ", event->sysex.data[i]);
+			printf("sysex event (length=%d): ", event->data.sysex.length);
+			for (int i = 0; i<event->data.sysex.length; ++i) {
+				printf("%02x ", event->data.sysex.data[i]);
 			}
 			break;
 		case 0xF7: // SysEx split
@@ -268,8 +269,8 @@ void print_midi_event(int track_index, int event_index, midi_event_type* event) 
 			// Read SysEx event
 			break;
 		case 0xFF: // Meta event
-			printf("meta: %02x (length=%d): ", event->meta.type, event->meta.length);
-			switch(event->meta.type) {
+			printf("meta: %02x (length=%d): ", event->data.meta.type, event->data.meta.length);
+			switch(event->data.meta.type) {
 				default:
 					printf("unknown type");
 					break;
@@ -285,9 +286,9 @@ void print_midi_event(int track_index, int event_index, midi_event_type* event) 
 				case 3:
 					printf("sequence/track name: ");
 					{
-						char* text = malloc(event->meta.length+1);
-						memcpy(text, event->meta.data, event->meta.length);
-						text[event->meta.length] = '\0';
+						char* text = malloc(event->data.meta.length+1);
+						memcpy(text, event->data.meta.data, event->data.meta.length);
+						text[event->data.meta.length] = '\0';
 						printf("%s", text);
 						free(text);
 					}
@@ -298,21 +299,21 @@ void print_midi_event(int track_index, int event_index, midi_event_type* event) 
 				case 0x51:
 					printf("set tempo: ");
 					{
-						byte* data = event->meta.data;
+						byte* data = event->data.meta.data;
 						int new_tempo = (data[0]<<16) | (data[1]<<8) | (data[2]);
 						printf("set tempo: %d", new_tempo);
 					}
 					break;
 				case 0x54:
 					printf("SMTPE offset: ");
-					for (int i = 0; i<event->meta.length; ++i) {
-						printf("%02x ", event->meta.data[i]);
+					for (int i = 0; i<event->data.meta.length; ++i) {
+						printf("%02x ", event->data.meta.data[i]);
 					}
 					break;
 				case 0x58:
 					printf("time signature: ");
-					for (int i = 0; i<event->meta.length; ++i) {
-						printf("%02x ", event->meta.data[i]);
+					for (int i = 0; i<event->data.meta.length; ++i) {
+						printf("%02x ", event->data.meta.data[i]);
 					}
 					break;
 				case 0x2F:
@@ -378,8 +379,8 @@ static void opl_write_instrument(instrument_type* instrument, byte voice) {
 }
 
 static void midi_note_off(midi_event_type* event) {
-	byte note = event->channel.param1;
-	byte channel = event->channel.channel;
+	byte note = event->data.channel.param1;
+	byte channel = event->data.channel.channel;
 	for (int voice = 0; voice < NUM_OPL_VOICES; ++voice) {
 		if (voice_channel[voice] == channel && voice_note[voice] == note) {
 			opl_write_reg_masked(0xB0 + reg_single_offsets[voice], 0, 0x20); // release key
@@ -398,9 +399,9 @@ static instrument_type* get_instrument(int id) {
 }
 
 static void midi_note_on(midi_event_type* event) {
-	byte note = event->channel.param1;
-	byte velocity = event->channel.param2;
-	byte channel = event->channel.channel;
+	byte note = event->data.channel.param1;
+	byte velocity = event->data.channel.param2;
+	byte channel = event->data.channel.channel;
 	int instrument_id = channel_instrument[channel];
 	instrument_type* instrument = get_instrument(instrument_id);
 
@@ -434,7 +435,7 @@ static void midi_note_on(midi_event_type* event) {
 			// Calculate frequency for a MIDI note: note number 69 = A4 = 440 Hz.
 			// However, Prince of Persia treats notes as one octave (12 semitones) lower than that, by default.
 			// A special MIDI SysEx event is used to change the frequency of all notes.
-			float octaves_from_A4 = ((int)event->channel.param1 - 69 - 12 + midi_semitones_higher) / 12.0f;
+			float octaves_from_A4 = ((int)event->data.channel.param1 - 69 - 12 + midi_semitones_higher) / 12.0f;
 			float frequency = powf(2.0f,  octaves_from_A4) * 440.0f;
 			float f_number_float = frequency * (float)(1 << 20) / 49716.0f;
 			int block = (int)(log2f(f_number_float) - 9) & 7;
@@ -472,22 +473,22 @@ static void process_midi_event(midi_event_type* event) {
 			midi_note_on(event);
 			break;
 		case 0xC0: // program change
-			channel_instrument[event->channel.channel] = event->channel.param1;
+			channel_instrument[event->data.channel.channel] = event->data.channel.param1;
 			break;
 		case 0xF0: // SysEx event:
-			if (event->sysex.length == 7) {
-				byte* data = event->sysex.data;
+			if (event->data.sysex.length == 7) {
+				byte* data = event->data.sysex.data;
 				if (data[2] == 0x34 && (data[3] == 0 || data[3] == 1) && data[4] == 0) {
 					midi_semitones_higher = data[5]; // Make all notes higher by this amount.
 				}
 			}
 			break;
 		case 0xFF: // Meta event
-			switch(event->meta.type) {
+			switch(event->data.meta.type) {
 				default: break;
 				case 0x51: // set tempo
 				{
-					byte* data = event->meta.data;
+					byte* data = event->data.meta.data;
 					int new_tempo = (data[0]<<16) | (data[1]<<8) | (data[2]);
 					new_tempo *= (1.0f + current_midi_tempo_modifier); // tempo adjustment for specific songs
 					us_per_beat = new_tempo;
@@ -523,7 +524,7 @@ void midi_callback(void *userdata, Uint8 *stream, int len) {
 			advance_us = advance_frames * ONE_SECOND_IN_US / mixing_freq; // recalculate, in case the rounding up increased this.
 			short* temp_buffer = malloc(advance_frames * 4);
 			OPL3_GenerateStream(&opl_chip, temp_buffer, advance_frames);
-			if (is_sound_on && enable_music) {
+			if (is_sound_on && is_sound_on) {
 				for (int sample = 0; sample < advance_frames * 2; ++sample) {
 					((short*)stream)[sample] += temp_buffer[sample];
 				}
@@ -648,7 +649,7 @@ void play_midi_sound(sound_buffer_type* buffer) {
 	if (digi_unavailable) return;
 	init_midi();
 
-	if (!parse_midi((midi_raw_chunk_type*) &buffer->midi, &parsed_midi)) {
+	if (!parse_midi((midi_raw_chunk_type*) &buffer->data.midi, &parsed_midi)) {
 		printf("Error reading MIDI music\n");
 		return;
 	}

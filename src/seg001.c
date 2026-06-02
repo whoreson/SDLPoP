@@ -1,28 +1,5 @@
-/*
-SDLPoP, a port/conversion of the DOS game Prince of Persia.
-Copyright (C) 2013-2025  Dávid Nagy
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-The authors of this program may be contacted at https://forum.princed.org
-*/
-
 #include "common.h"
-
-#ifndef _MSC_VER // unistd.h does not exist in the Windows SDK.
-#include <unistd.h>
-#endif
+#include <fcntl.h>
 
 // data:4CB4
 short cutscene_wait_frames;
@@ -46,6 +23,8 @@ SDL_COMPILE_TIME_ASSERT(hof_size, sizeof(hof_type) == 29);
 #pragma pack(pop)
 
 #define MAX_HOF_COUNT 6
+// data:405E
+short hof_count;
 // data:589A
 hof_type hof[MAX_HOF_COUNT];
 
@@ -62,11 +41,10 @@ rect_type hof_rects[MAX_HOF_COUNT] = {
 };
 
 // seg001:0004
-int proc_cutscene_frame(int wait_frames) {
+int __pascal far proc_cutscene_frame(int wait_frames) {
 	cutscene_wait_frames = wait_frames;
-	reset_timer(timer_0);
 	do {
-		set_timer_length(timer_0, cutscene_frame_time);
+		start_timer(0, cutscene_frame_time);
 		play_both_seq();
 		draw_proom_drects(); // changed order of drects and flash
 		if (flash_time) {
@@ -80,9 +58,10 @@ int proc_cutscene_frame(int wait_frames) {
 			play_next_sound();
 		}
 		do {
+			//idle();
 			if (!disable_keys && do_paused()) {
 				stop_sounds();
-				draw_rect(&screen_rect, color_0_black);
+				draw_rect(&screen_rect, 0);
 #ifdef USE_FADE
 				if (is_global_fading) {
 					fade_palette_buffer->proc_restore_free(fade_palette_buffer);
@@ -100,31 +79,30 @@ int proc_cutscene_frame(int wait_frames) {
 				}
 			} else {
 				idle();
-				delay_ticks(1);
 			}
 #else
 			idle();
 #endif
-		} while(!has_timer_stopped(timer_0)); // busy waiting?
-		--cutscene_wait_frames;
-	} while(cutscene_wait_frames);
+//			idle();
+//		} while(/*wait_time0*/ !timer_stopped[0]); // busy waiting?
+		} while(/*wait_time0*/ !has_timer_stopped(0)); // busy waiting?
+	} while(--cutscene_wait_frames);
 	return 0;
 }
 
 // seg001:00DD
-void play_both_seq() {
+void __pascal far play_both_seq() {
 	play_kid_seq();
 	play_opp_seq();
 }
 
 // seg001:00E6
-void draw_proom_drects() {
+void __pascal far draw_proom_drects() {
 	draw_princess_room_bg();
 #ifdef USE_FADE
 	if (!is_global_fading) {
 #endif
-	while (drects_count) {
-		drects_count--;
+	while (drects_count--) {
 		copy_screen_rect(&drects[drects_count]);
 	}
 #ifdef USE_FADE
@@ -137,7 +115,7 @@ void draw_proom_drects() {
 }
 
 // seg001:0128
-void play_kid_seq() {
+void __pascal far play_kid_seq() {
 	loadkid();
 	if (Char.frame) {
 		play_seq();
@@ -146,7 +124,7 @@ void play_kid_seq() {
 }
 
 // seg001:013F
-void play_opp_seq() {
+void __pascal far play_opp_seq() {
 	loadshad_and_opp();
 	if (Char.frame) {
 		play_seq();
@@ -155,8 +133,8 @@ void play_opp_seq() {
 }
 
 // seg001:0156
-void draw_princess_room_bg() {
-	memset(table_counts, 0, sizeof(table_counts));
+void __pascal far draw_princess_room_bg() {
+	memset_near(table_counts, 0, sizeof(table_counts));
 	loadkid();
 	if (Char.frame) {
 		load_frame_to_obj();
@@ -177,125 +155,125 @@ void draw_princess_room_bg() {
 }
 
 // seg001:01E0
-void seqtbl_offset_shad_char(int seq_index) {
+void __pascal far seqtbl_offset_shad_char(int seq_index) {
 	loadshad();
 	seqtbl_offset_char(seq_index);
 	saveshad();
 }
 
 // seg001:01F9
-void seqtbl_offset_kid_char(int seq_index) {
+void __pascal far seqtbl_offset_kid_char(int seq_index) {
 	loadkid();
 	seqtbl_offset_char(seq_index);
 	savekid();
 }
 
 // seg001:0212
-void init_mouse_cu8() {
+void __pascal far init_mouse_cu8() {
 	init_mouse_go();
 	Char.x = 144;
-	seqtbl_offset_char(seq_106_mouse); // mouse
+	seqtbl_offset_char(106); // mouse
 	play_seq();
 }
 
 // seg001:022A
-void init_mouse_go() {
+void __pascal far init_mouse_go() {
 	Char.charid = charid_24_mouse;
 	Char.x = 199;
 	Char.y = 167;
 	Char.direction = dir_FF_left;
-	seqtbl_offset_char(seq_105_mouse_forward); // mouse go
+	seqtbl_offset_char(105); // mouse go
 	play_seq();
 }
 
 // seg001:024D
-void princess_crouching() {
+void __pascal far princess_crouching() {
 	init_princess();
 	Char.x = 131;
 	Char.y = 169;
-	seqtbl_offset_char(seq_110_princess_crouching_PV2); // princess crouching [PV2]
+	seqtbl_offset_char(110); // princess crouching [PV2]
 	play_seq();
 }
 
 // seg001:026A
-void princess_stand() {
+void __pascal far princess_stand() {
 	init_princess_right();
 	Char.x = 144;
 	Char.y = 169;
-	seqtbl_offset_char(seq_94_princess_stand_PV1); // princess stand [PV1]
+	seqtbl_offset_char(94); // princess stand [PV1]
 	play_seq();
 }
 
 // seg001:0287
-void init_princess_x156() {
+void __pascal far init_princess_x156() {
 	init_princess();
 	Char.x = 156;
 }
 
 // seg001:0291
-void princess_lying() {
+void __pascal far princess_lying() {
 	init_princess();
 	Char.x = 92;
 	Char.y = 162;
-	seqtbl_offset_char(seq_103_princess_lying_PV2); // princess lying [PV2]
+	seqtbl_offset_char(103); // princess lying [PV2]
 	play_seq();
 }
 
 // seg001:02AE
-void init_princess_right() {
+void __pascal far init_princess_right() {
 	init_princess();
 	Char.direction = dir_0_right;
 }
 
 // seg001:02B8
-void init_ending_princess() {
+void __pascal far init_ending_princess() {
 	init_princess();
 	Char.x = 136;
 	Char.y = 164;
-	seqtbl_offset_char(seq_109_princess_stand_PV2); // princess standing [PV2]
+	seqtbl_offset_char(109); // princess standing [PV2]
 	play_seq();
 }
 
 // seg001:02D5
-void init_mouse_1() {
+void __pascal far init_mouse_1() {
 	init_mouse_go();
 	Char.x -= 2;
 	Char.y = 164;
 }
 
 // seg001:02E4
-void init_princess() {
+void __pascal far init_princess() {
 	Char.charid = charid_5_princess;
 	Char.x = 120;
 	Char.y = 166;
 	Char.direction = dir_FF_left;
-	seqtbl_offset_char(seq_94_princess_stand_PV1); // princess stand [PV1]
+	seqtbl_offset_char(94); // princess stand [PV1]
 	play_seq();
 }
 
 // seg001:0307
-void init_vizier() {
+void __pascal far init_vizier() {
 	Char.charid = charid_6_vizier;
 	Char.x = 198;
 	Char.y = 166;
 	Char.direction = dir_FF_left;
-	seqtbl_offset_char(seq_95_Jaffar_stand_PV1); // Jaffar stand [PV1]
+	seqtbl_offset_char(95); // Jaffar stand [PV1]
 	play_seq();
 }
 
 // seg001:032A
-void init_ending_kid() {
+void __pascal far init_ending_kid() {
 	Char.charid = charid_0_kid;
 	Char.x = 198;
 	Char.y = 164;
 	Char.direction = dir_FF_left;
-	seqtbl_offset_char(seq_1_start_run); // start run
+	seqtbl_offset_char(1); // start run
 	play_seq();
 }
 
 // seg001:034D
-void cutscene_8() {
-	play_sound(sound_35_cutscene_8_9); // cutscene 8, 9
+void __pascal far cutscene_8() {
+	play_sound(35); // cutscene 8, 9
 	set_hourglass_state(hourglass_frame());
 	init_mouse_cu8();
 	savekid();
@@ -303,17 +281,17 @@ void cutscene_8() {
 	saveshad();
 	if (fade_in_1()) return;
 	if (proc_cutscene_frame(20)) return;
-	seqtbl_offset_kid_char(seq_107_mouse_stand_up_and_go); // mouse stand up and go
+	seqtbl_offset_kid_char(107); // mouse stand up and go
 	if (proc_cutscene_frame(20)) return;
-	seqtbl_offset_shad_char(seq_111_princess_stand_up_PV2); // princess stand up [PV2]
+	seqtbl_offset_shad_char(111); // princess stand up [PV2]
 	if (proc_cutscene_frame(20)) return;
 	Kid.frame = 0;
 	fade_out_1();
 }
 
 // seg001:03B7
-void cutscene_9() {
-	play_sound(sound_35_cutscene_8_9); // cutscene 8, 9
+void __pascal far cutscene_9() {
+	play_sound(35); // cutscene 8, 9
 	set_hourglass_state(hourglass_frame());
 	princess_stand();
 	saveshad();
@@ -321,52 +299,47 @@ void cutscene_9() {
 	init_mouse_go();
 	savekid();
 	if (proc_cutscene_frame(5)) return;
-	seqtbl_offset_shad_char(seq_112_princess_crouch_down_PV2); // princess crouch down [PV2]
+	seqtbl_offset_shad_char(112); // princess crouch down [PV2]
 	if (proc_cutscene_frame(9)) return;
-	seqtbl_offset_kid_char(seq_114_mouse_stand); // mouse stand
+	seqtbl_offset_kid_char(114); // mouse stand
 	if (proc_cutscene_frame(58)) return;
 	fade_out_1();
 }
 
 // seg001:041C
-void end_sequence_anim() {
+void __pascal far end_sequence_anim() {
 	disable_keys = 1;
 	if (!is_sound_on) {
 		turn_sound_on_off(0x0F);
 	}
 	copy_screen_rect(&screen_rect);
-	play_sound(sound_26_embrace); // arrived to princess
+	play_sound(26); // arrived to princess
 	init_ending_princess();
 	saveshad();
 	init_ending_kid();
 	savekid();
 	if (proc_cutscene_frame(8)) return;
-	seqtbl_offset_shad_char(seq_108_princess_turn_and_hug); // princess turn and hug [PV2]
+	seqtbl_offset_shad_char(108); // princess turn and hug [PV2]
 	if (proc_cutscene_frame(5)) return;
-	seqtbl_offset_kid_char(seq_13_stop_run); // stop run
+	seqtbl_offset_kid_char(13); // stop run
 	if (proc_cutscene_frame(2)) return;
 	Kid.frame = 0;
 	if (proc_cutscene_frame(39)) return;
-	if (!custom->no_mouse_in_ending) {
-		init_mouse_1();
-		savekid();
-		if (proc_cutscene_frame(9)) return;
-		seqtbl_offset_kid_char(seq_101_mouse_stands_up); // mouse stands up
-		if (proc_cutscene_frame(41)) return;
-	}
+	init_mouse_1();
+	savekid();
+	if (proc_cutscene_frame(9)) return;
+	seqtbl_offset_kid_char(101); // mouse stands up
+	if (proc_cutscene_frame(41)) return;
 	fade_out_1();
-	while (check_sound_playing()) {
-		idle();
-		delay_ticks(1);
-	}
+	while (check_sound_playing()) idle();
 }
 
 // seg001:04D3
-void time_expired() {
+void __pascal far time_expired() {
 	disable_keys = 1;
 	set_hourglass_state(7);
 	hourglass_sandflow = -1;
-	play_sound(sound_36_out_of_time); // time over
+	play_sound(36); // time over
 	if (fade_in_1()) return;
 	if (proc_cutscene_frame(2)) return;
 	if (proc_cutscene_frame(100)) return;
@@ -374,18 +347,18 @@ void time_expired() {
 	while (check_sound_playing()) {
 		idle();
 		do_paused();
-		delay_ticks(1);
 	}
 }
 
 // seg001:0525
-void cutscene_12() {
-	short frame_num = hourglass_frame();
-	if (frame_num >= 6) {
-		set_hourglass_state(frame_num);
+void __pascal far cutscene_12() {
+	short var_2;
+	var_2 = hourglass_frame();
+	if (var_2 >= 6) {
+		set_hourglass_state(var_2);
 		init_princess_x156();
 		saveshad();
-		play_sound(sound_40_cutscene_12_short_time); // cutscene 12 short time
+		play_sound(40); // cutscene 12 short time
 		if (fade_in_1()) return;
 		if (proc_cutscene_frame(2)) return;
 		seqtbl_offset_shad_char(98); // princess turn around [PV1]
@@ -397,8 +370,8 @@ void cutscene_12() {
 }
 
 // seg001:0584
-void cutscene_4() {
-	play_sound(sound_27_cutscene_2_4_6_12); // cutscene 2, 4, 6, 12
+void __pascal far cutscene_4() {
+	play_sound(27); // cutscene 2, 4, 6, 12
 	set_hourglass_state(hourglass_frame());
 	princess_lying();
 	saveshad();
@@ -408,8 +381,8 @@ void cutscene_4() {
 }
 
 // seg001:05B8
-void cutscene_2_6() {
-	play_sound(sound_27_cutscene_2_4_6_12); // cutscene 2, 4, 6, 12
+void __pascal far cutscene_2_6() {
+	play_sound(27); // cutscene 2, 4, 6, 12
 	set_hourglass_state(hourglass_frame());
 	init_princess_right();
 	saveshad();
@@ -419,31 +392,31 @@ void cutscene_2_6() {
 }
 
 // seg001:05EC
-void pv_scene() {
+void __pascal far pv_scene() {
 	init_princess();
 	saveshad();
 	if (fade_in_1()) return;
 	init_vizier();
 	savekid();
 	if (proc_cutscene_frame(2)) return;
-	play_sound(sound_50_story_2_princess); // story 2: princess waiting
+	play_sound(50); // story 2: princess waiting
 	do {
 		if (proc_cutscene_frame(1)) return;
 		//idle();
 	} while(check_sound_playing());
 	cutscene_frame_time = 8;
 	if (proc_cutscene_frame(5)) return;
-	play_sound(sound_4_gate_closing); // gate closing
+	play_sound(4); // gate closing
 	do {
 		if (proc_cutscene_frame(1)) return;
 	} while(check_sound_playing());
-	play_sound(sound_51_princess_door_opening); // princess door opening
+	play_sound(51); // princess door opening
 	if (proc_cutscene_frame(3)) return;
 	seqtbl_offset_shad_char(98); // princess turn around [PV1]
 	if (proc_cutscene_frame(5)) return;
 	seqtbl_offset_kid_char(96); // Jaffar walk [PV1]
 	if (proc_cutscene_frame(6)) return;
-	play_sound(sound_53_story_3_Jaffar_comes); // story 3: Jaffar comes
+	play_sound(53); // story 3: Jaffar comes
 	seqtbl_offset_kid_char(97); // Jaffar stop [PV1]
 	if (proc_cutscene_frame(4)) return;
 	if (proc_cutscene_frame(18)) return;
@@ -466,7 +439,7 @@ void pv_scene() {
 	seqtbl_offset_kid_char(100); // Jaffar end conjuring and walk [PV1]
 	hourglass_sandflow = 0;
 	if (proc_cutscene_frame(6)) return;
-	play_sound(sound_52_story_4_Jaffar_leaves); // story 4: Jaffar leaves
+	play_sound(52); // story 4: Jaffar leaves
 	if (proc_cutscene_frame(24)) return;
 	hourglass_state = 2;
 	if (proc_cutscene_frame(9)) return;
@@ -476,7 +449,7 @@ void pv_scene() {
 }
 
 // seg001:07C7
-void set_hourglass_state(int state) {
+void __pascal far set_hourglass_state(int state) {
 	hourglass_sandflow = 0;
 	hourglass_state = state;
 }
@@ -485,7 +458,7 @@ void set_hourglass_state(int state) {
 short time_bound[] = {6, 17, 33, 65};
 
 // seg001:07DA
-int hourglass_frame() {
+int __pascal far hourglass_frame() {
 	short bound_index;
 	for (bound_index = 0; bound_index < 4; ++bound_index) {
 		if (time_bound[bound_index] > rem_min) {
@@ -503,8 +476,9 @@ short princess_torch_pos_xl[] = {5, 3};
 short princess_torch_frame[] = {1, 6};
 
 // seg001:0808
-void princess_room_torch() {
-	for (short which = 2; which--; ) {
+void __pascal far princess_room_torch() {
+	short which;
+	for (which = 2; which--; ) {
 		which_torch = !which_torch;
 		princess_torch_frame[which_torch] = get_torch_frame(princess_torch_frame[which_torch]);
 		add_backtable(id_chtab_1_flameswordpotion, princess_torch_frame[which_torch] + 1, princess_torch_pos_xh[which_torch], princess_torch_pos_xl[which_torch], 116, 0, 0);
@@ -512,7 +486,7 @@ void princess_room_torch() {
 }
 
 // seg001:0863
-void draw_hourglass() {
+void __pascal far draw_hourglass() {
 	if (hourglass_sandflow >= 0) {
 		hourglass_sandflow = (hourglass_sandflow + 1) % 3;
 		if (hourglass_state >= 7) return;
@@ -524,13 +498,13 @@ void draw_hourglass() {
 }
 
 // seg001:08CA
-void reset_cutscene() {
+void __pascal far reset_cutscene() {
 	Guard.frame = 0;
 	Kid.frame = 0;
 	which_torch = 0;
 	disable_keys = 0;
 	hourglass_state = 0;
-	// memset(byte_1ED6E, 0, 8); // not used elsewhere
+	// memset_near(byte_1ED6E, 0, 8); // not used elsewhere
 	hourglass_sandflow = -1;
 	cutscene_frame_time = 6;
 	clear_tile_wipes();
@@ -538,29 +512,19 @@ void reset_cutscene() {
 }
 
 // seg001:0908
-void do_flash(short color) {
+void __pascal far do_flash(short color) {
 	// stub
 	if (color) {
 		if (graphics_mode == gmMcgaVga) {
-			reset_timer(timer_2);
-			set_timer_length(timer_2, 2);
 			set_bg_attr(0, color);
-			if (color != 0) do_simple_wait(timer_2); // give some time to show the flash
 		} else {
 			// ...
 		}
 	}
 }
 
-void delay_ticks(Uint32 ticks) {
-#ifdef USE_REPLAY
-	if (replaying && skipping_replay) return;
-#endif
-	SDL_Delay(ticks *(1000/60));
-}
-
 // seg001:0981
-void remove_flash() {
+void __pascal far remove_flash() {
 	// stub
 	if (graphics_mode == gmMcgaVga) {
 		set_bg_attr(0, 0);
@@ -570,29 +534,32 @@ void remove_flash() {
 }
 
 // seg001:09D7
-void end_sequence() {
+void __pascal far end_sequence() {
+	peel_type peel;
+	short bgcolor;
+	short color;
 	rect_type rect;
 	short hof_index;
-	short i;
-	short color = 0;
-	short bgcolor = 15;
+	short var_12;
+	// byte unused[50];
+	color = 0;
+	bgcolor = 15;
 	load_intro(1, &end_sequence_anim, 1);
 	clear_screen_and_sounds();
-	is_ending_sequence = true; // added (fix being able to pause the game during the end sequence)
-	load_opt_sounds(sound_56_ending_music, sound_56_ending_music); // winning theme
-	play_sound_from_buffer(sound_pointers[sound_56_ending_music]); // winning theme
+	load_opt_sounds(56, 56); // winning theme
+	play_sound_from_buffer(sound_pointers[56]); // winning theme
 	if(offscreen_surface) free_surface(offscreen_surface); // missing in original
 	offscreen_surface = make_offscreen_buffer(&screen_rect);
 	load_title_images(0);
 	current_target_surface = offscreen_surface;
-	draw_full_image(STORY_FRAME);
-	draw_full_image(STORY_HAIL);
+	draw_image_2(0 /*story frame*/, chtab_title40, xlat_title_40, 0, 0, 0);
+	draw_image_2(3 /*The tyrant Jaffar*/, chtab_title40, 0, 24, 25, get_text_color(15, 15, 0x800));
 	fade_in_2(offscreen_surface, 0x800);
-	pop_wait(timer_0, 900);
-	start_timer(timer_0, 240);
-	draw_full_image(TITLE_MAIN);
+	pop_wait(0, 900);
+	start_timer(0, 240);
+	draw_image_2(0 /*main title image*/, chtab_title50, xlat_title_50, 0, 0, 0);
 	transition_ltr();
-	do_wait(timer_0);
+	do_wait(0);
 	for (hof_index = 0; hof_index < hof_count; ++hof_index) {
 		if (hof[hof_index].min < rem_min ||
 			(hof[hof_index].min == rem_min && hof[hof_index].tick < rem_tick)
@@ -600,20 +567,20 @@ void end_sequence() {
 	}
 	if (hof_index < MAX_HOF_COUNT && hof_index <= hof_count) {
 		fade_out_2(0x1000);
-		for (i = 5; hof_index + 1 <= i; --i) {
-			hof[i] = hof[i - 1];
+		for (var_12 = 5; hof_index + 1 <= var_12; --var_12) {
+			hof[var_12] = hof[var_12 - 1];
 		}
-		hof[i].name[0] = 0;
-		hof[i].min = rem_min;
-		hof[i].tick = rem_tick;
+		hof[var_12].name[0] = 0;
+		hof[var_12].min = rem_min;
+		hof[var_12].tick = rem_tick;
 		if (hof_count < MAX_HOF_COUNT) {
 			++hof_count;
 		}
-		draw_full_image(STORY_FRAME);
-		draw_full_image(HOF_POP);
+		draw_image_2(0 /*story frame*/, chtab_title40, xlat_title_40, 0, 0, 0);
+		draw_image_2(3 /*Prince Of Persia*/, chtab_title50, xlat_title_50, 24, 24, blitters_10h_transp);
 		show_hof();
 		offset4_rect_add(&rect, &hof_rects[hof_index], -4, -1, -40, -1);
-		peel_type* peel = read_peel_from_screen(&rect);
+		peel = read_peel_from_screen(&rect);
 		if (graphics_mode == gmMcgaVga) {
 			color = 0xBE;
 			bgcolor = 0xB7;
@@ -625,23 +592,19 @@ void end_sequence() {
 		restore_peel(peel);
 		show_hof_text(&hof_rects[hof_index], -1, 0, hof[hof_index].name);
 		hof_write();
-		pop_wait(timer_0, 120);
+		pop_wait(0, 120);
 		current_target_surface = offscreen_surface;
-		draw_full_image(TITLE_MAIN);
+		draw_image_2(0 /*main title image*/, chtab_title50, xlat_title_50, 0, 0, blitters_0_no_transp);
 		transition_ltr();
 	}
-	while (check_sound_playing() && !key_test_quit()) {
-		idle();
-		delay_ticks(1);
-	}
+	while (check_sound_playing() && !key_test_quit()) idle();
 	fade_out_2(0x1000);
-	start_level = -1;
-	is_ending_sequence = false;
+	start_level = 0;
 	start_game();
 }
 
 // seg001:0C94
-void expired() {
+void __pascal far expired() {
 	if (!demo_mode) {
 		if(offscreen_surface) free_surface(offscreen_surface); // missing in original
 		offscreen_surface = NULL;
@@ -649,47 +612,46 @@ void expired() {
 		offscreen_surface = make_offscreen_buffer(&screen_rect);
 		load_intro(1, &time_expired, 1);
 	}
-	start_level = -1;
+	start_level = 0;
 	start_game();
 }
 
 // seg001:0CCD
-void load_intro(int which_imgs,cutscene_ptr_type func,int free_sounds) {
-	draw_rect(&screen_rect, color_0_black);
+void __pascal far load_intro(int which_imgs,cutscene_ptr_type func,int free_sounds) {
+	short current_star;
+	draw_rect(&screen_rect, 0);
 	if (free_sounds) {
 		free_optional_sounds();
 	}
 	free_all_chtabs_from(id_chtab_3_princessinstory);
-	load_chtab_from_file(id_chtab_8_princessroom, 950, "PV.DAT", 1<<13);
-	load_chtab_from_file(id_chtab_9_princessbed, 980, "PV.DAT", 1<<14);
+	load_chtab_from_file(id_chtab_8_princessroom, 950, "PV.DAT", 1<<13/*, (void*)-1*/);
+	load_chtab_from_file(id_chtab_9_princessbed, 980, "PV.DAT", 1<<14/*, (void*)-1*/);
 	current_target_surface = offscreen_surface;
-	method_6_blit_img_to_scr(get_image(id_chtab_8_princessroom, 0), 0, 0, 0);
-	method_6_blit_img_to_scr(get_image(id_chtab_9_princessbed, 0), 0, 142, blitters_2_or);
-
+	method_6_blit_img_to_scr(chtab_addrs[8]->pointers[0], 0, 0, 0);
+	method_6_blit_img_to_scr(chtab_addrs[9]->pointers[0], 0, 142, blitters_2_or);
+	
 	// Free the images that are not needed anymore.
 	free_all_chtabs_from(id_chtab_9_princessbed);
-	SDL_FreeSurface(get_image(id_chtab_8_princessroom, 0));
-	if (NULL != chtab_addrs[id_chtab_8_princessroom]) chtab_addrs[id_chtab_8_princessroom]->images[0] = NULL;
-
-	load_chtab_from_file(id_chtab_3_princessinstory, 800, "PV.DAT", 1<<9);
-	load_chtab_from_file(id_chtab_4_jaffarinstory_princessincutscenes,
-	                     50*which_imgs + 850, "PV.DAT", 1<<10);
-	for (short current_star = 0; current_star < N_STARS; ++current_star) {
+	SDL_FreeSurface(chtab_addrs[8]->pointers[0]);
+	chtab_addrs[8]->pointers[0] = NULL;
+	
+	load_chtab_from_file(id_chtab_3_princessinstory, 800, "PV.DAT", 1<<9/*, (void*)-1*/);
+	load_chtab_from_file(4, 50*which_imgs + 850, "PV.DAT", 1<<10/*, (void*)-1*/);
+	for (current_star = 0; current_star < N_STARS; ++current_star) {
 		draw_star(current_star, 0);
 	}
 	current_target_surface = onscreen_surface_;
 	while (check_sound_playing()) {
 		idle();
 		do_paused();
-		delay_ticks(1);
 	}
 	need_drects = 1;
 	reset_cutscene();
-	is_cutscene = 1;
+	word_1EFAA = 1;
 	func();
-	is_cutscene = 0;
+	word_1EFAA = 0;
 	free_all_chtabs_from(3);
-	draw_rect(&screen_rect, color_0_black);
+	draw_rect(&screen_rect, 0);
 }
 
 typedef struct star_type {
@@ -710,7 +672,7 @@ star_type stars[N_STARS] = {
 const byte star_colors[N_STAR_COLORS] = {8, 7, 15, 15, 7};
 
 // seg001:0E1C
-void draw_star(int which_star,int mark_dirty) {
+void __pascal far draw_star(int which_star,int mark_dirty) {
 	// The stars in the window of the princess's room.
 	rect_type rect;
 	short star_color;
@@ -730,83 +692,51 @@ void draw_star(int which_star,int mark_dirty) {
 }
 
 // seg001:0E94
-void show_hof() {
+void __pascal far show_hof() {
 	// Hall of Fame
+	short index;
 	char time_text[12];
-	for (short index = 0; index < hof_count; ++index) {
-
-		printf("index = %d, hof[index].min = %d, hof[index].tick = %d\n", index, hof[index].min, hof[index].tick);
-#ifdef ALLOW_INFINITE_TIME
-		int minutes, seconds;
-		if (hof[index].min > 0) {
-			// if there was a time limit
-			minutes = hof[index].min - 1;
-			seconds = hof[index].tick / 12;
-		} else if (hof[index].min == 0) {
-			// if there was a time limit and it expired
-			minutes = 0;
-			seconds = 0;
-		} else {
-			// negative minutes means time ran 'forward' from 0:00 upwards
-			minutes = abs(hof[index].min) - 1;
-			seconds = (719 - hof[index].tick) / 12;
-		}
-		snprintf(time_text, sizeof(time_text), "%d:%02d", minutes, seconds);
-#else
-		// if the time limit expired (from PoP 1.4)
-		if (hof[index].min == 0) {
-			hof[index].min = 1;
-			hof[index].tick = 0;
-		}
+	for (index = 0; index < hof_count; ++index) {
 		snprintf(time_text, sizeof(time_text), "%d:%02d", hof[index].min - 1, hof[index].tick / 12);
-#endif
-
 		show_hof_text(&hof_rects[index], -1, 0, hof[index].name);
 		show_hof_text(&hof_rects[index], 1, 0, time_text);
 	}
 	// stub
 }
 
-static const char* hof_file = "PRINCE.HOF";
-
-const char* get_hof_path(char* custom_path_buffer, size_t max_len) {
-	return get_writable_file_path(custom_path_buffer, max_len, hof_file /*PRINCE.HOF*/ );
-}
-
 // seg001:0F17
-void hof_write() {
-	char custom_hof_path[POP_MAX_PATH];
-	const char* hof_path = get_hof_path(custom_hof_path, sizeof(custom_hof_path));
-	FILE* handle = fopen(hof_path, "wb");
-	if (handle == NULL ||
-		fwrite(&hof_count, 1, 2, handle) != 2 ||
-		fwrite(&hof, 1, sizeof(hof), handle) != sizeof(hof))
-		perror(hof_path);
-	if (handle != NULL)
-		fclose(handle);
+void __pascal far hof_write() {
+	int handle;
+	// no O_TRUNC
+	handle = open("PRINCE.HOF", O_WRONLY | O_CREAT | O_BINARY, 0600);
+	if (handle != -1) {
+		write(handle, &hof_count, 2);
+		write(handle, &hof, sizeof(hof));
+		close(handle);
+	} else {
+		perror("hof_write");
+	}
 }
 
 // seg001:0F6C
-void hof_read() {
+void __pascal far hof_read() {
+	int handle;
 	hof_count = 0;
-	char custom_hof_path[POP_MAX_PATH];
-	const char* hof_path = get_hof_path(custom_hof_path, sizeof(custom_hof_path));
-	FILE* handle = fopen(hof_path, "rb");
-	if (handle == NULL)
-		return;
-	if (fread(&hof_count, 1, 2, handle) != 2 ||
-		fread(&hof, 1, sizeof(hof), handle) != sizeof(hof)) {
-		perror(hof_path);
-		hof_count = 0;
+	handle = open("PRINCE.HOF", O_RDONLY | O_BINARY);
+	if (handle != -1) {
+		read(handle, &hof_count, 2);
+		read(handle, &hof, sizeof(hof));
+		close(handle);
 	}
-	fclose(handle);
 }
 
 // seg001:0FC3
-void show_hof_text(rect_type* rect,int x_align,int y_align, const char* text) {
+void __pascal far show_hof_text(rect_type far *rect,int x_align,int y_align, const char *text) {
+	short shadow_color;
+	short text_color;
 	rect_type rect2;
-	short text_color = 15;
-	short shadow_color = 0;
+	text_color = 15;
+	shadow_color = 0;
 	if (graphics_mode == gmMcgaVga) {
 		text_color = 0xB7;
 	}
@@ -816,12 +746,12 @@ void show_hof_text(rect_type* rect,int x_align,int y_align, const char* text) {
 }
 
 // seg001:1029
-int fade_in_1() {
+int __pascal far fade_in_1() {
 #ifdef USE_FADE
 //	sbyte index;
 	word interrupted;
 	if (graphics_mode == gmMcgaVga) {
-		fade_palette_buffer = make_pal_buffer_fadein(offscreen_surface, 0x6689, /*0*/ 2);
+		fade_palette_buffer = make_pal_buffer_fadein(offscreen_surface, 0x6689, /*0*/1);
 		is_global_fading = 1;
 		do {
 			interrupted = proc_cutscene_frame(1);
@@ -837,18 +767,17 @@ int fade_in_1() {
 #else
 	// stub
 	method_1_blit_rect(onscreen_surface_, offscreen_surface, &screen_rect, &screen_rect, 0);
-	update_screen();
-//	SDL_UpdateRect(onscreen_surface_, 0, 0, 0, 0); // debug
+	SDL_UpdateRect(onscreen_surface_, 0, 0, 0, 0); // debug
 	return 0;
 #endif
 }
 
 // seg001:112D
-int fade_out_1() {
+int __pascal far fade_out_1() {
 #ifdef USE_FADE
 	word interrupted;
 	if (graphics_mode == gmMcgaVga) {
-		fade_palette_buffer = make_pal_buffer_fadeout(0x6689, /*0*/ 2);
+		fade_palette_buffer = make_pal_buffer_fadeout(0x6689, /*0*/1);
 		is_global_fading = 1;
 		do {
 			interrupted = proc_cutscene_frame(1);

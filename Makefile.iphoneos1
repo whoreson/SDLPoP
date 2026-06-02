@@ -1,0 +1,53 @@
+# SDLPoP 1.14 cross-build for iPhone OS 1.0 (ARMv6)
+PREFIX = /usr/local/arm-apple-darwin-ios1
+OBJDIR = build_iphoneos1
+
+CC = $(PREFIX)/bin/arm-apple-darwin-gcc
+
+# -DTOUCH_DEBUG for touchscreen event printfs in seg009.c
+CFLAGS = -Wall -O2 -std=c99 \
+	-D__IPHONEOS__ -DIPHONEOS1 -Diphoneos -DUSE_JOYSTICK -DUSE_MIXER \
+	-DSDL_BYTEORDER=1234 \
+	-I$(OBJDIR) -I$(PREFIX)/include \
+	-I$(PREFIX)/local/include -DTOUCH_DEBUG
+
+FRAMEWORKS = -lobjc -framework UIKit -framework Foundation \
+	-framework CoreGraphics -framework GraphicsServices \
+	-framework CoreFoundation -framework LayerKit -framework CoreAudio -framework AudioToolbox
+
+LIBS = /data4/work/SDL_image-1.2.10/build_iphoneos1/libSDL_image.a \
+	-L$(PREFIX)/local/lib -lSDL_mixer \
+	$(PREFIX)/local/lib/libpng.a \
+	$(PREFIX)/local/lib/libz.a \
+	-lSDLmain \
+	-lSDL \
+	$(FRAMEWORKS) -lm
+
+SRCS = main.c data.c \
+	seg000.c seg001.c seg002.c seg003.c seg004.c seg005.c \
+	seg006.c seg007.c seg008.c seg009.c midi.c opl3.c
+
+OBJS = $(patsubst %.c,$(OBJDIR)/%.o,$(SRCS))
+
+BINARY = $(OBJDIR)/SDLPoP
+
+all: $(BINARY)
+
+deploy: all
+	rsync -ax $(BINARY) rsync://10.0.0.22/dev/test.bin
+
+$(BINARY): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+
+$(OBJDIR)/%.o: %.c | $(OBJDIR)
+	$(CC) $(CFLAGS) -S $< -o $(OBJDIR)/$*.s
+	sed -e '/mcr p15/d' -e '/bkpt/d' $(OBJDIR)/$*.s > $(OBJDIR)/$*_p.s
+	$(CC) $(CFLAGS) -c $(OBJDIR)/$*_p.s -o $@
+
+$(OBJDIR):
+	mkdir -p $@
+
+clean:
+	rm -rf $(OBJDIR)
+
+.PHONY: all clean

@@ -1,31 +1,15 @@
-/*
-SDLPoP, a port/conversion of the DOS game Prince of Persia.
-Copyright (C) 2013-2025  Dávid Nagy
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-The authors of this program may be contacted at https://forum.princed.org
-*/
-
 #include "common.h"
 
 #define SEQTBL_BASE 0x196E
 #define SEQTBL_0 (seqtbl - SEQTBL_BASE)
-extern const byte seqtbl[]; // the sequence table is defined in seqtbl.c
+// data:196E
+const byte seqtbl[] = {0xF9,0x01,0xFF,0x81,0x19,0xF9,0x01,0x01,0x02,0x03,0x04,0xFB,0x08,0x05,0xFB,0x03,0x06,0xFB,0x03,0x07,0xFB,0x05,0x08,0xFB,0x01,0xF2,0x01,0x09,0xFB,0x02,0x0A,0xFB,0x04,0x0B,0xFB,0x05,0x0C,0xFB,0x02,0xF2,0x01,0x0D,0xFB,0x03,0x0E,0xFB,0x04,0xFF,0x81,0x19,0xF9,0x00,0x0F,0xFF,0xA0,0x19,0xF9,0x01,0xA6,0xFF,0xA8,0x19,0xF9,0x05,0xFB,0x0A,0xB1,0xB1,0xFB,0xF9,0xFA,0xFE,0xB2,0xFB,0x05,0xFA,0x02,0xA6,0xFB,0xFF,0xFF,0xD2,0x19,0xFF,0xD2,0x19,0xF9,0x01,0xFB,0x02,0xCF,0xD0,0xFB,0x02,0xD1,0xFB,0x02,0xD2,0xFB,0x03,0xF9,0x01,0xF2,0x00,0x9E,0xAA,0xAB,0xFF,0xD8,0x19,0xF9,0x05,0xF8,0xFF,0x00,0xAC,0xFB,0xFF,0xFA,0x01,0xAD,0xFB,0xFF,0xAE,0xFB,0xFF,0xFA,0x02,0xFB,0xFE,0xFA,0x01,0xFB,0xFB,0xFA,0xFC,0xFF,0x4D,0x1A,0xF9,0x01,0xF8,0x01,0x00,0x9B,0xFB,0x02,0xA5,0xFB,0xFE,0xFF,0xD2,0x19,0xF9,0x01,0xF8,0xFF,0x00,0x9B,0x9C,0x9D,0x9E,0xFF,0x2E,0x1A,0xF9,0x01,0xF8,0x01,0x00,0xFB,0x02,0xA3,0xFB,0x04,0xA4,0xA5,0xFF,0xD2,0x19,0xF9,0x01,0xF8,0x01,0x00,0xFB,0x06,0xA4,0xA5,0xFF,0xD2,0x19,0xF9,0x01,0xF8,0xFF,0x00,0xFB,0xFD,0xA0,0xFB,0xFE,0x9D,0xFF,0xD2,0x19,0xF9,0x01,0xF8,0xFF,0x00,0xA8,0xF9,0x01,0x97,0xF9,0x01,0x98,0x99,0x9A,0xF9,0x05,0x9B,0xF9,0x01,0x9C,0x9D,0xFF,0xD2,0x19,0xF9,0x01,0xA7,0xFF,0x4A,0x1A,0xA2,0xFF,0x45,0x1A,0xA9,0x96,0xFF,0xD2,0x19,0x9F,0xA0,0xFF,0x5F,0x1A,0xF9,0x01,0xF4,0xFF,0xD2,0x19,0xF9,0x05,0xFB,0xF8,0xFF,0xD2,0x19,0xF9,0x05,0xA0,0x9D,0xFF,0xD2,0x19,0xF9,0x07,0xFB,0xF8,0xFF,0x39,0x1B,0xF9,0x05,0xFE,0xFB,0x05,0xFF,0x2E,0x1A,0xF9,0x05,0xFE,0xFB,0x12,0xFF,0xA6,0x19,0xF9,0x01,0x10,0x11,0xFB,0x02,0x12,0xFB,0x02,0x13,0xFB,0x02,0x14,0xFB,0x02,0x15,0xFB,0x02,0x16,0xFB,0x07,0x17,0xFB,0x09,0x18,0xFB,0x05,0xFA,0xFA,0x19,0xFB,0x01,0xFA,0x06,0x1A,0xFB,0x04,0xF4,0xF2,0x01,0x1B,0xFB,0xFD,0x1C,0xFB,0x05,0x1D,0xF2,0x01,0x1E,0x1F,0x20,0x21,0xFB,0x01,0xFF,0xA0,0x19,0xF9,0x01,0xF2,0x01,0x22,0xFB,0x05,0x23,0xFB,0x06,0x24,0xFB,0x03,0x25,0xFB,0x05,0xF2,0x01,0x26,0xFB,0x07,0x27,0xFB,0x0C,0xFA,0xFD,0x28,0xFB,0x08,0xFA,0xF7,0x29,0xFB,0x08,0xFA,0xFE,0x2A,0xFB,0x04,0xFA,0x0B,0x2B,0xFB,0x04,0xFA,0x03,0x2C,0xFB,0x05,0xF4,0xF2,0x01,0xFF,0x81,0x19,0xF9,0x01,0xFB,0x01,0x6B,0xFB,0x02,0xFB,0x02,0x6C,0xFB,0x02,0x6D,0xFB,0x02,0x6D,0xFB,0x02,0x6D,0xFF,0x16,0x1B,0x00,0xF9,0x01,0xFB,0x01,0x6E,0x6F,0xFB,0x02,0x70,0xFB,0x02,0x6C,0xFB,0x02,0x6D,0xFF,0x29,0x1B,0xF9,0x07,0xFE,0xFB,0x06,0x2D,0xFB,0x01,0x2E,0xFF,0xC4,0x19,0xF9,0x07,0xFE,0xFB,0x06,0x2D,0xFB,0x01,0x2E,0xFB,0x02,0x2F,0xFB,0xFF,0x30,0xFB,0x01,0x31,0xFB,0xFE,0x32,0x33,0x34,0xFF,0xA0,0x19,0xF9,0x01,0xFB,0xFF,0xFF,0x75,0x19,0xF9,0x01,0xFB,0x01,0x35,0xFB,0x01,0xF2,0x01,0x36,0xFB,0x08,0x37,0xF2,0x01,0x38,0xFB,0x07,0x39,0xFB,0x03,0x3A,0xFB,0x01,0x3B,0x3C,0xFB,0x02,0x3D,0xFB,0xFF,0x3E,0x3F,0x40,0xFB,0xFF,0x41,0xFB,0xF2,0xFE,0xFF,0x95,0x19,0xF9,0x03,0xFA,0xFF,0x66,0xFB,0xFE,0xFA,0x06,0x67,0xFB,0xFE,0xFA,0x09,0x68,0xFB,0xFF,0xFA,0x0C,0x69,0xFB,0xFD,0xF8,0x00,0x0F,0xFF,0x49,0x1D,0xF9,0x03,0xFA,0xFF,0xFB,0xFE,0x66,0xFB,0xFD,0xFA,0x06,0x67,0xFB,0xFD,0xFA,0x09,0x68,0xFB,0xFE,0xFA,0x0C,0x69,0xFB,0xFD,0xF8,0x00,0x0F,0xFF,0x49,0x1D,0xF9,0x03,0xFB,0x01,0xFA,0xFF,0x66,0xFB,0x02,0xFA,0x06,0x67,0xFB,0xFF,0xFA,0x09,0x68,0xFA,0x0C,0x69,0xFB,0xFE,0xF8,0x01,0x0F,0xFF,0x49,0x1D,0xF9,0x03,0xFB,0x01,0xFA,0x03,0xF7,0x06,0x1C,0x66,0xFB,0x02,0xFA,0x06,0x67,0xFB,0xFF,0xFA,0x09,0x68,0xFA,0x0C,0x69,0xFB,0xFE,0xF8,0x01,0x0F,0xFF,0x49,0x1D,0xFB,0xFF,0xFA,0xFD,0xFF,0xE4,0x1B,0xFB,0x01,0xFF,0xDB,0x1B,0x66,0xFB,0x02,0xFA,0x03,0x67,0xFB,0xFF,0xFA,0x04,0x68,0xFA,0x05,0x69,0xFB,0xFE,0xF8,0x01,0x06,0xFF,0x49,0x1D,0xF9,0x03,0xFB,0x01,0xFA,0x03,0x66,0xFB,0x02,0xFA,0x06,0x67,0xFB,0x01,0xFA,0x09,0x68,0xFB,0x02,0xFA,0x0C,0x69,0xF8,0x02,0x0F,0xFF,0x49,0x1D,0xF9,0x03,0xFB,0x01,0xFA,0x03,0x66,0xFB,0x03,0xFA,0x06,0x67,0xFB,0x02,0xFA,0x09,0x68,0xFB,0x03,0xFA,0x0C,0x69,0xF8,0x03,0x0F,0xFF,0x49,0x1D,0xF9,0x01,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4A,0x4B,0x4C,0x4D,0xF9,0x02,0x4E,0x4F,0x50,0xFF,0xA1,0x1C,0xF9,0x01,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4A,0x4B,0x4C,0x4D,0xF9,0x02,0xFB,0x01,0x4E,0xFB,0x02,0x4F,0xFB,0x01,0x50,0xFF,0xA1,0x1C,0xF9,0x01,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4A,0x4B,0x4C,0xFB,0xFF,0x4D,0xF9,0x02,0xFB,0xFE,0x4E,0xFB,0xFF,0x4F,0xFB,0xFF,0x50,0xFF,0xA1,0x1C,0xF9,0x02,0x5B,0x5A,0x59,0x58,0x57,0x57,0x57,0x58,0x59,0x5A,0x5B,0x5C,0x5D,0x5E,0x5F,0x60,0x61,0x62,0x63,0x61,0x60,0x5F,0x5E,0x5D,0x5C,0x5B,0x5A,0x59,0x58,0x57,0x58,0x59,0x5A,0x5B,0x5C,0x5D,0x5E,0x5F,0x60,0x5F,0x5E,0x5D,0x5C,0xFF,0x25,0x1D,0xF9,0x06,0x5C,0x5D,0x5D,0x5C,0x5C,0x5B,0xFF,0xD8,0x1C,0x87,0x88,0x89,0x89,0x8A,0x8A,0x8A,0x8A,0x89,0x88,0x87,0xFB,0xF9,0xFF,0x25,0x1D,0xF9,0x01,0x94,0x91,0x90,0x8F,0x8E,0x8D,0xFB,0xFB,0xFA,0x3F,0xFC,0xF9,0x03,0x8C,0x8A,0x88,0x5B,0xF9,0x02,0xFF,0xA4,0x1C,0xF9,0x01,0x87,0x88,0x89,0x8A,0x8B,0x8C,0xFB,0x05,0xFA,0xC1,0xFD,0x8D,0x8E,0x8F,0x90,0x91,0x92,0x93,0x94,0xF9,0x05,0x95,0xF9,0x01,0x76,0x77,0xFB,0x01,0xFF,0xA0,0x19,0x51,0x52,0xF9,0x05,0x53,0xF9,0x01,0xF4,0xF2,0x00,0x54,0x55,0xFB,0x03,0xFF,0xA0,0x19,0xF9,0x03,0x51,0xFA,0x06,0x51,0xFA,0x09,0x51,0xFA,0x0C,0xFB,0x02,0xF8,0x00,0x0C,0xFF,0x49,0x1D,0xF9,0x04,0x6A,0xFF,0x4B,0x1D,0xF9,0x01,0x35,0xFB,0x02,0xF2,0x01,0x36,0xFB,0x07,0x37,0xF2,0x01,0x38,0xFB,0x02,0x31,0xFB,0xFE,0x32,0x33,0x34,0xFF,0xA0,0x19,0xF9,0x01,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4A,0x4B,0x4C,0x4D,0x4E,0xF9,0x00,0xF5,0x4F,0xFF,0x25,0x1D,0xF9,0x01,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4A,0x4B,0x4C,0x4D,0x4E,0x4F,0xFA,0xFC,0x4F,0xFA,0xFE,0x4F,0x4F,0xFA,0x02,0x4F,0xFA,0x04,0xFF,0x25,0x1D,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4A,0x4B,0x4C,0xFA,0xFF,0x4D,0xFA,0xFD,0x4E,0xFA,0xFC,0x4F,0xFA,0xF6,0x4F,0xFA,0xF7,0x4F,0xFA,0xF8,0x4F,0xFA,0xF9,0x4F,0xFA,0xFA,0x4F,0xFA,0xFB,0x4F,0xFA,0xFC,0x4F,0xFA,0xFD,0x4F,0xFA,0xFE,0x4F,0xFA,0xFE,0x4F,0xFA,0xFF,0x4F,0xFA,0xFF,0x4F,0xFA,0xFF,0x4F,0x4F,0x4F,0x4F,0xFA,0x01,0x4F,0xFA,0x01,0x4F,0xFA,0x02,0x4F,0xFA,0x02,0x4F,0xFA,0x03,0x4F,0xFA,0x04,0x4F,0xFA,0x05,0x4F,0xFA,0x06,0x4F,0xF8,0x00,0x06,0xFF,0x49,0x1D,0xF9,0x03,0x50,0xFF,0xA1,0x1C,0xF9,0x05,0xFB,0xFC,0x32,0x33,0x34,0xFF,0xA0,0x19,0xF9,0x05,0xFB,0x01,0xFA,0x03,0xF7,0x25,0x1E,0x66,0xFB,0x02,0xFA,0x06,0x67,0xFB,0xFF,0xFA,0x09,0x68,0xFA,0x0C,0x69,0xFB,0xFE,0xF8,0x00,0x0F,0xFF,0x49,0x1D,0x66,0xFB,0x02,0xFA,0x03,0x67,0xFB,0xFF,0xFA,0x04,0x68,0xFA,0x05,0x69,0xFB,0xFE,0xF8,0x00,0x06,0xFF,0x49,0x1D,0xF9,0x05,0xFB,0xFF,0xFA,0xFC,0x66,0xFB,0xFF,0xFA,0x03,0xFB,0xFD,0xFA,0x01,0xF4,0xFB,0x01,0xF2,0x01,0x6B,0xFB,0x02,0x6C,0xF2,0x01,0x6D,0xFF,0xB3,0x1F,0x79,0xFB,0x01,0x7A,0x7B,0xFB,0x02,0x7C,0xFB,0x04,0x7D,0xFB,0x03,0x7E,0xFB,0xFC,0x56,0xF2,0x01,0xF4,0xFB,0xFC,0x74,0xFB,0xFE,0x75,0x76,0x77,0xFF,0xA0,0x19,0xFB,0xFB,0xFF,0xA0,0x19,0xF9,0x01,0x79,0xFB,0x01,0x7A,0xFB,0x01,0x7B,0xFB,0x03,0x7C,0xFB,0x04,0x7D,0xFB,0x03,0x7E,0xFB,0xFF,0xFB,0x03,0x7F,0x80,0x81,0x82,0x83,0x84,0xFF,0xA0,0x19,0xF9,0x01,0x79,0xFB,0x01,0x7A,0xFB,0x01,0x7B,0xFB,0x03,0x7C,0xFB,0x04,0x7D,0xFB,0x03,0x7E,0xFB,0xFF,0xFB,0x02,0x7F,0x80,0x81,0x82,0x83,0x84,0xFF,0xA0,0x19,0xF9,0x01,0x79,0xFB,0x01,0x7A,0xFB,0x01,0x7B,0xFB,0x03,0x7C,0xFB,0x04,0x7D,0xFB,0x03,0x7E,0xFB,0xFF,0xFB,0x01,0x7F,0x80,0x81,0x82,0x83,0x84,0xFF,0xA0,0x19,0xF9,0x01,0x79,0xFB,0x01,0x7A,0xFB,0x01,0x7B,0xFB,0x03,0x7C,0xFB,0x04,0x7D,0xFB,0x03,0x7E,0xFB,0xFF,0x7F,0x80,0x81,0x82,0x83,0x84,0xFF,0xA0,0x19,0xF9,0x01,0x79,0xFB,0x01,0x7A,0xFB,0x01,0x7B,0xFB,0x03,0x7C,0xFB,0x04,0x7D,0xFB,0x03,0x7E,0xFB,0xFE,0x80,0x81,0x82,0x83,0x84,0xFF,0xA0,0x19,0xF9,0x01,0x79,0xFF,0xFC,0x1E,0xF9,0x01,0x79,0xFB,0x01,0x7A,0xFB,0x01,0x7B,0xFB,0x03,0x7C,0xFB,0x04,0x7D,0xFB,0xFF,0x7F,0x80,0x81,0x82,0x83,0x84,0xFF,0xA0,0x19,0xF9,0x01,0x79,0xFB,0x01,0x7A,0xFB,0x01,0x7B,0xFB,0x03,0x7C,0xFB,0x02,0x81,0x82,0x83,0x84,0xFF,0xA0,0x19,0xF9,0x01,0x79,0xFB,0x01,0x7A,0xFB,0x01,0x7B,0xFB,0x02,0x7C,0xFB,0x02,0x81,0x82,0x83,0x84,0xFF,0xA0,0x19,0xF9,0x01,0x79,0xFB,0x01,0x7A,0xFB,0x01,0x7B,0xFB,0x02,0x7C,0xFB,0x01,0x81,0x82,0x83,0x84,0xFF,0xA0,0x19,0xF9,0x01,0x79,0xFB,0x01,0x7A,0xFB,0x01,0x7B,0xFB,0x02,0x83,0x84,0xFF,0xA0,0x19,0xF9,0x01,0x79,0xFB,0x01,0x7A,0xFB,0x01,0x7B,0xFB,0x01,0x83,0x84,0xFF,0xA0,0x19,0xF9,0x01,0x79,0xFB,0x01,0x7A,0xFB,0x01,0x84,0xFF,0xA0,0x19,0xF9,0x01,0x79,0xFB,0x01,0x84,0xFF,0xA0,0x19,0xF9,0x01,0xFB,0x01,0x6B,0xFB,0x02,0x6C,0x6D,0xFF,0xAF,0x1F,0xF9,0x05,0xFB,0x01,0x6E,0x6F,0xFB,0x02,0x70,0x71,0xFB,0x01,0x72,0x73,0x74,0xFB,0xFC,0x75,0x76,0x77,0xFF,0xA0,0x19,0xF9,0x01,0xF3,0x01,0xE5,0xE5,0xE5,0xE5,0xE5,0xE5,0xE6,0xE7,0xE8,0xFF,0xDA,0x1F,0xF9,0x01,0xFB,0xFB,0xE9,0xEA,0xEB,0xEC,0xED,0xEE,0xEF,0xF0,0x85,0x85,0x86,0x86,0x86,0x30,0xFB,0x01,0x31,0xFB,0xFE,0xF9,0x05,0x32,0xF9,0x01,0x33,0x34,0xFF,0xA0,0x19,0xF9,0x01,0xFB,0xFB,0xEA,0xEC,0xEE,0xF0,0x86,0xFB,0xFF,0xFF,0xA0,0x19,0xF9,0x01,0xFB,0x04,0xBF,0xC0,0xC1,0xC2,0xC3,0xC4,0xC5,0xF2,0x03,0xC6,0xC7,0xC8,0xC9,0xCA,0xCB,0xCC,0xCD,0xCD,0xCD,0xF3,0x01,0xCD,0xCD,0xC9,0xC6,0xFB,0xFC,0xFF,0xA0,0x19,0xF9,0x05,0xF4,0xFB,0x01,0x6B,0xFB,0x02,0x6C,0xF9,0x01,0x6D,0xFF,0x36,0x20,0xF9,0x01,0xFA,0xFE,0xFB,0x01,0x6B,0xFB,0x02,0x6C,0x6D,0xFB,0x01,0x6E,0x6F,0xFB,0x02,0x70,0x71,0xFB,0x01,0xFA,0x01,0x72,0xFA,0x01,0x73,0xFB,0xFE,0xFF,0x78,0x19,0xF9,0x05,0xF4,0xFA,0xFE,0xFB,0x01,0xFB,0x02,0x6C,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0x6D,0xFB,0x01,0x6E,0x6E,0x6E,0x6F,0xFB,0x02,0x70,0x71,0xFB,0x01,0xFA,0x01,0x72,0xFA,0x01,0x73,0x74,0xFB,0xFC,0x75,0x76,0x77,0xFF,0xA0,0x19,0xF9,0x05,0xF4,0xFA,0xFE,0xFB,0x03,0xB9,0xF6,0xB9,0xFF,0xA5,0x20,0xF9,0x05,0xFF,0xAE,0x20,0xF9,0x01,0xF6,0xB3,0xB4,0xB5,0xB6,0xFB,0x01,0xB7,0xFB,0xFC,0xB9,0xFF,0xBA,0x20,0xF9,0x01,0xF4,0xFB,0x04,0xB1,0xF6,0xB1,0xFF,0xC5,0x20,0xF9,0x01,0xB2,0xF6,0xB2,0xFF,0xCD,0x20,0xFF,0x5A,0x20,0xF8,0x00,0x00,0xF9,0x04,0xB9,0xFF,0xD9,0x20,0xF9,0x05,0xFB,0xFB,0xFA,0xFF,0xF2,0x01,0xD9,0xDA,0xDB,0xFB,0x01,0xDC,0xFB,0xFC,0xFA,0xFD,0xF2,0x01,0xDD,0xFB,0xFC,0xFA,0xFE,0xDE,0xFB,0xFE,0xFA,0xFD,0xDF,0xFB,0xFD,0xFA,0xF8,0xF2,0x04,0xF2,0x01,0xE0,0xFB,0xFF,0xFA,0xFF,0xE1,0xFB,0xFD,0xFA,0xFC,0xE2,0xFB,0xFF,0xFA,0xFB,0xF2,0x01,0xE3,0xFB,0xFE,0xFA,0xFF,0xE4,0x00,0xF2,0x01,0x00,0x00,0x00,0xF2,0x01,0x00,0x00,0x00,0xF2,0x01,0x00,0x00,0x00,0xF2,0x01,0xF1,0x00,0xFF,0x2E,0x21,0x36,0xFF,0x32,0x21,0x55,0x43,0x43,0x43,0x43,0x43,0x43,0x43,0x43,0x43,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4A,0x4B,0x53,0x54,0x4C,0xFF,0x4B,0x21,0xFB,0x01,0x30,0xFB,0x02,0x31,0xFB,0x06,0x32,0xFB,0x01,0x33,0xFB,0xFF,0x34,0xFB,0x01,0x35,0xFB,0x01,0xFF,0x51,0x21,0xFB,0x01,0x37,0x38,0xFF,0x32,0x21,0x4D,0x4E,0x4F,0x50,0x51,0x52,0xFB,0x01,0x36,0x36,0x36,0x36,0x36,0x36,0x39,0x3A,0x3B,0x3C,0x3D,0xFB,0x02,0x3E,0xFB,0xFF,0x3F,0xFB,0xFD,0x40,0x41,0xFB,0xFF,0x42,0xFE,0xFB,0x10,0xFB,0x03,0xFF,0x54,0x21,0x0B,0xFF,0x95,0x21,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0xFE,0xFB,0x08,0x0B,0xFF,0x95,0x21,0xFE,0xFB,0x0B,0x0C,0xFB,0x01,0x0D,0xFB,0x01,0x0E,0xFB,0x03,0x0F,0xFB,0x01,0x10,0x11,0xFF,0xB8,0x21,0x13,0xFF,0xBC,0x21,0x14,0xFF,0xC0,0x21,0x15,0xFB,0x01,0x16,0x17,0x18,0xFB,0x01,0x19,0xFB,0xFD,0x1A,0xFB,0xFE,0x1B,0xFB,0xFC,0x1C,0xFB,0xFD,0x1D,0xFB,0xFE,0x1E,0xFB,0xFD,0x1F,0xFB,0xFF,0x20,0x21,0xFF,0xE2,0x21,0x25,0xFF,0xE6,0x21,0x25,0x26,0x27,0x28,0x29,0x2A,0x2B,0x2C,0x2D,0x2E,0x2F,0xFE,0xFB,0x0C,0x0B,0xFF,0xF8,0x21,0x0B,0x0B,0xFE,0xFB,0x0D,0x2F,0x2E,0x2D,0x2C,0x2B,0x2A,0x29,0x28,0x27,0x26,0x25,0x24,0x24,0x24,0x23,0x23,0x23,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x23,0x23,0x24,0x24,0x24,0x23,0x23,0x23,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x23,0x23,0x24,0x24,0x24,0x23,0x23,0x23,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x22,0x23,0x23,0x23,0x24,0xFF,0x3C,0x22,0x01,0x12,0xFF,0x41,0x22,0xF9,0x01,0xBA,0xFB,0x05,0xBA,0xFB,0x03,0xBB,0xFB,0x04,0xFF,0x47,0x22,0xBA,0xFF,0x53,0x22,0xBC,0xFF,0x57,0x22,0xF9,0x00,0xBA,0xBA,0xBA,0xBC,0xBC,0xBC,0xBC,0xBC,0xBC,0xBC,0xBC,0xFE,0xFB,0x08,0xFF,0x47,0x22,0xBA,0xBA,0xBC,0xFF,0x70,0x22};
+
+// data:4F80
+short pickup_obj_type;
 
 // seg006:0006
-int get_tile(int room,int col,int row) {
+int __pascal far get_tile(int room,int col,int row) {
 	curr_room = room;
 	tile_col = col;
 	tile_row = row;
@@ -37,26 +21,14 @@ int get_tile(int room,int col,int row) {
 		curr_tile2 = curr_room_tiles[curr_tilepos] & 0x1F;
 	} else {
 		// wall in room 0
-		curr_tile2 = custom->level_edge_hit_tile; // tiles_20_wall
+		curr_tile2 = tiles_20_wall;
 	}
 	return curr_tile2;
 }
 
 // seg006:005D
-int find_room_of_tile() {
+int __pascal far find_room_of_tile() {
 	again:
-#ifdef FIX_CORNER_GRAB
-	// Check tile_row < 0 first, this way the prince can grab a ledge at the bottom right corner of a room with no room below.
-	// Details: https://forum.princed.org/viewtopic.php?p=30410#p30410
-	if (tile_row < 0) {
-		tile_row += 3;
-		if (curr_room) {
-			curr_room = level.roomlinks[curr_room - 1].up;
-		}
-		//find_room_of_tile();
-		goto again;
-	}
-#endif
 	if (tile_col < 0) {
 		tile_col += 10;
 		if (curr_room) {
@@ -64,27 +36,21 @@ int find_room_of_tile() {
 		}
 		//find_room_of_tile();
 		goto again;
-	}
-	if (tile_col >= 10) {
+	} else if (tile_col >= 10) {
 		tile_col -= 10;
 		if (curr_room) {
 			curr_room = level.roomlinks[curr_room - 1].right;
 		}
 		//find_room_of_tile();
 		goto again;
-	}
-#ifndef FIX_CORNER_GRAB
-	// if (tile_row < 0) was here originally
-	if (tile_row < 0) {
+	} else if (tile_row < 0) {
 		tile_row += 3;
 		if (curr_room) {
 			curr_room = level.roomlinks[curr_room - 1].up;
 		}
 		//find_room_of_tile();
 		goto again;
-	}
-#endif
-	if (tile_row >= 3) {
+	} else if (tile_row >= 3) {
 		tile_row -= 3;
 		if (curr_room) {
 			curr_room = level.roomlinks[curr_room - 1].down;
@@ -96,7 +62,7 @@ int find_room_of_tile() {
 }
 
 // seg006:00EC
-int get_tilepos(int tile_col,int tile_row) {
+int __pascal far get_tilepos(int tile_col,int tile_row) {
 	if (tile_row < 0) {
 		return -(tile_col + 1);
 	} else if (tile_row >= 3 || tile_col >= 10 || tile_col < 0) {
@@ -107,19 +73,20 @@ int get_tilepos(int tile_col,int tile_row) {
 }
 
 // seg006:0124
-int get_tilepos_nominus(int tile_col,int tile_row) {
-	short tilepos = get_tilepos(tile_col, tile_row);
-	if (tilepos < 0) return 30; else return tilepos;
+int __pascal far get_tilepos_nominus(int tile_col,int tile_row) {
+	short var_2;
+	var_2 = get_tilepos(tile_col, tile_row);
+	if (var_2 < 0) return 30; else return var_2;
 }
 
 // seg006:0144
-void load_fram_det_col() {
+void __pascal far load_fram_det_col() {
 	load_frame();
 	determine_col();
 }
 
 // seg006:014D
-void determine_col() {
+void __pascal far determine_col() {
 	Char.curr_col = get_tile_div_mod_m7(dx_weight());
 }
 
@@ -503,27 +470,17 @@ const frame_type frame_tbl_cuts[] = {
 {  37, 0x80| 0,   1,   0, 0x00| 0},
 };
 
-
-void get_frame_internal(const frame_type frame_table[], int frame, const char* frame_table_name, int count) {
-	if (frame >= 0 && frame < count) {
-		cur_frame = frame_table[frame];
-	} else {
-		printf("Tried to use %s[%d], not in 0..%d\n", frame_table_name, frame, count-1);
-		static const frame_type blank_frame = {255, 0, 0, 0, 0};
-		cur_frame = blank_frame;
-	}
-}
-#define get_frame(frame_table, frame) get_frame_internal(frame_table, frame, #frame_table, COUNT(frame_table))
-
 // seg006:015A
-void load_frame() {
-	short frame = Char.frame;
-	short add_frame = 0;
+void __pascal far load_frame() {
+	short frame;
+	short add_frame;
+	frame = Char.frame;
+	add_frame = 0;
 	switch (Char.charid) {
 		case charid_0_kid:
 		case charid_24_mouse:
 		use_table_kid:
-			get_frame(frame_table_kid, frame);
+			cur_frame = frame_table_kid[frame];
 		break;
 		case charid_2_guard:
 		case charid_4_skeleton:
@@ -532,25 +489,25 @@ void load_frame() {
 		case charid_1_shadow:
 			if (frame < 150 || frame >= 190) goto use_table_kid;
 		use_table_guard:
-			get_frame(frame_tbl_guard, frame + add_frame - 149);
+			cur_frame = frame_tbl_guard[frame + add_frame - 149];
 		break;
 		case charid_5_princess:
 		case charid_6_vizier:
 //		use_table_cutscene:
-			get_frame(frame_tbl_cuts, frame);
+			cur_frame = frame_tbl_cuts[frame];
 		break;
 	}
 }
-#undef get_frame
 
 // seg006:01F5
-short dx_weight() {
-	sbyte offset = cur_frame.dx - (cur_frame.flags & FRAME_WEIGHT_X);
-	return char_dx_forward(offset);
+short __pascal far dx_weight() {
+	sbyte var_2;
+	var_2 = cur_frame.dx - (cur_frame.flags & 0x1F);
+	return char_dx_forward(var_2);
 }
 
 // seg006:0213
-int char_dx_forward(int delta_x) {
+int __pascal far char_dx_forward(int delta_x) {
 	if (Char.direction < dir_0_right) {
 		delta_x = -delta_x;
 	}
@@ -558,7 +515,7 @@ int char_dx_forward(int delta_x) {
 }
 
 // seg006:0234
-int obj_dx_forward(int delta_x) {
+int __pascal far obj_dx_forward(int delta_x) {
 	if (obj_direction < dir_0_right) {
 		delta_x = -delta_x;
 	}
@@ -567,126 +524,89 @@ int obj_dx_forward(int delta_x) {
 }
 
 // seg006:0254
-void play_seq() {
+void __pascal far play_seq() {
 	for (;;) {
-		byte command = *(SEQTBL_0 + Char.curr_seq);
-		Char.curr_seq++;
-		switch (command) {
-			case SEQ_DX: // dx
-				Char.x = char_dx_forward(*(SEQTBL_0 + Char.curr_seq));
-				Char.curr_seq++;
+		byte item = *(SEQTBL_0 + Char.curr_seq++);
+		switch (item) {
+			case 0xFB: // dx
+				Char.x = char_dx_forward(*(SEQTBL_0 + Char.curr_seq++));
 				break;
-			case SEQ_DY: // dy
-				Char.y += *(SEQTBL_0 + Char.curr_seq);
-				Char.curr_seq++;
+			case 0xFA: // dy
+				Char.y += *(SEQTBL_0 + Char.curr_seq++);
 				break;
-			case SEQ_FLIP: // flip
+			case 0xFE: // flip
 				Char.direction = ~Char.direction;
 				break;
-			case SEQ_JMP_IF_FEATHER: // jump if feather
+			case 0xF7: // jump if feather
 				if (!is_feather_fall) {
 					++Char.curr_seq;
 					++Char.curr_seq;
 					break;
 				}
 				// fallthrough!
-			case SEQ_JMP: // jump
-				#ifdef __PSP__
-				word command1 = (word)*(SEQTBL_0 + Char.curr_seq);
-				word command2 =  (word)*(SEQTBL_0 + Char.curr_seq+1);
-				//for some reason, this works, but normal pointer cast crashes (?)
-				Char.curr_seq = SDL_SwapLE16(command1 | (command2<<8));
-				#else
-				Char.curr_seq = SDL_SwapLE16(*(const word*)(SEQTBL_0 + Char.curr_seq));
-				#endif
+			case 0xFF: // jump
+				Char.curr_seq = *(word*)(SEQTBL_0 + Char.curr_seq)/*++*/;
 				break;
-			case SEQ_UP: // up
+			case 0xFD: // up
 				--Char.curr_row;
 				start_chompers();
 				break;
-			case SEQ_DOWN: // down
+			case 0xFC: // down
 				inc_curr_row();
 				start_chompers();
 				break;
-			case SEQ_ACTION: // action
-				Char.action = *(SEQTBL_0 + Char.curr_seq);
-				Char.curr_seq++;
+			case 0xF9: // action
+				Char.action = *(SEQTBL_0 + Char.curr_seq++);
 				break;
-			case SEQ_SET_FALL: // set fall
-				Char.fall_x = *(SEQTBL_0 + Char.curr_seq);
-				Char.curr_seq++;
-				Char.fall_y = *(SEQTBL_0 + Char.curr_seq);
-				Char.curr_seq++;
+			case 0xF8: // set fall
+				Char.fall_x = *(SEQTBL_0 + Char.curr_seq++);
+				Char.fall_y = *(SEQTBL_0 + Char.curr_seq++);
 				break;
-			case SEQ_KNOCK_UP: // knock up
+			case 0xF5: // knock up
 				knock = 1;
 				break;
-			case SEQ_KNOCK_DOWN: // knock down
+			case 0xF4: // knock down
 				knock = -1;
 				break;
-			case SEQ_SOUND: // sound
-			{
-				int which_sound = *(SEQTBL_0 + Char.curr_seq);
-				Char.curr_seq++;
-				switch (which_sound) {
-					case SND_SILENT: // no sound actually played, but guards still notice the kid
+			case 0xF2: // sound
+				switch (*(SEQTBL_0 + Char.curr_seq++)) {
+					case 0: // sword
 						is_guard_notice = 1;
 						break;
-					case SND_FOOTSTEP: // feet
-						play_sound(sound_23_footstep); // footstep
+					case 1: // feet
+						play_sound(23); // footstep
 						is_guard_notice = 1;
 						break;
-					case SND_BUMP: // bump
-						play_sound(sound_8_bumped); // touching a wall
+					case 2: // bump
+						play_sound(8); // touching a wall
 						is_guard_notice = 1;
 						break;
-					case SND_DRINK: // drink
-						play_sound(sound_18_drink); // drink
+					case 3: // drink
+						play_sound(18); // drink
 						break;
-					case SND_LEVEL: // level
-#ifdef USE_REPLAY
-						if (recording || replaying) break; // don't do end level music in replays
-#endif
-
+					case 4: // level
 						if (is_sound_on) {
-							if (current_level == /*4*/ custom->mirror_level) {
-								play_sound(sound_32_shadow_music); // end level with shadow (level 4)
+							if (current_level == 4) {
+								play_sound(32); // end level with shadow (level 4)
 							} else if (current_level != 13 && current_level != 15) {
-								play_sound(sound_41_end_level_music); // end level
+								play_sound(41); // end level
 							}
 						}
 						break;
 				}
 				break;
-			}
-			case SEQ_END_LEVEL: // end level
+			case 0xF1: // end level
 				++next_level;
-#ifdef USE_REPLAY
-				// Preserve the seed in this frame, to ensure reproducibility of the replay in the next level,
-				// regardless of how long the sound is still playing *after* this frame.
-				// Animations (e.g. torch) can change the seed!
-				keep_last_seed = 1;
-				if (replaying && skipping_replay) stop_sounds();
-#endif
 				break;
-			case SEQ_GET_ITEM: // get item
-			{
-				int which_item = *(SEQTBL_0 + Char.curr_seq);
-				Char.curr_seq++;
-				if (which_item == 1) {
+			case 0xF3: // get item
+				if (*(SEQTBL_0 + Char.curr_seq++) == 1) {
 					proc_get_object();
 				}
-#ifdef USE_TELEPORTS
-				if (which_item == 2) {
-					teleport();
-				}
-#endif
 				break;
-			}
-			case SEQ_DIE: // nop
+			case 0xF6: // nop
 				break;
 			default:
-				Char.frame = command;
+				Char.frame = item;
 				//if (Char.frame == 185) Char.frame = 185;
 				return;
 		}
@@ -694,7 +614,7 @@ void play_seq() {
 }
 
 // seg006:03DE
-int get_tile_div_mod_m7(int xpos) {
+int __pascal far get_tile_div_mod_m7(int xpos) {
 	return get_tile_div_mod(xpos - 7);
 }
 
@@ -747,110 +667,89 @@ const byte tile_mod_tbl[256] = {
 };
 
 // seg006:03F0
-int get_tile_div_mod(int xpos) {
-	// Determine tile column (xh) and the position within the tile (xl) from xpos.
-
-// DOS PoP does this:
+int __pascal far get_tile_div_mod(int xpos) {
+	// xpos might be negative if the kid is far off left.
+	// In this case, the array index overflows.
+/*	if (xpos < 0 || xpos >= 256) {
+		printf("get_tile_div_mod(): xpos = %d\n", xpos);
+	}*/
 //	obj_xl = tile_mod_tbl[xpos];
 //	return tile_div_tbl[xpos];
-
-	// xpos uses a coordinate system in which the left edge of the screen is 58, and each tile is 14 units wide.
-	int x = xpos - SCREENSPACE_X;
-	int xl = x % TILE_SIZEX;
-	int xh = x / TILE_SIZEX;
+	int x = xpos - 58;
+	int xl = x % 14;
+	int xh = x / 14;
 	if (xl < 0) {
 		// Integer division rounds towards zero, but we want to round down.
 		--xh;
 		// Modulo returns a negative number if x is negative, but we want 0 <= xl < 14.
-		xl += TILE_SIZEX;
+		xl += 14;
 	}
-
-	// For compatibility with the DOS version, we allow for overflow access to these tables
-	// Considering the case of negative overflow
-	if (xpos < 0) {
-		// In this case DOS PoP reads the bytes directly before tile_div_tbl[] and tile_mod_tbl[] in the memory.
-		// Here we simulate these reads.
-		// Before tile_mod_tbl[] is tile_div_tbl[], and before tile_div_tbl[] are the following bytes:
-		static const byte bogus[] = {0x02, 0x00, 0x41, 0x00, 0x80, 0x00, 0xBF, 0x00, 0xFE, 0x00, 0xFF, 0x01, 0x01, 0xFF, 0xC4, 0xFF, 0x03, 0x00, 0x42, 0x00, 0x81, 0x00, 0xC0, 0x00, 0xF8, 0xFF, 0x37, 0x00, 0x76, 0x00, 0xB5, 0x00, 0xF4, 0x00};
-		if (COUNT(bogus) + xpos >= 0) {
-			xh = bogus[COUNT(bogus) + xpos]; // simulating tile_div_tbl[xpos]
-			xl = tile_div_tbl[COUNT(tile_div_tbl) + xpos]; // simulating tile_mod_tbl[xpos]
-		} else {
-			printf("xpos = %d (< %d) out of range for simulation of index overflow!\n", xpos, -(int)COUNT(bogus));
-		}
-	}
-
-	// Considering the case of positive overflow
-	int tblSize = 256;
-
-	if (xpos >= tblSize) {
-		// In this case DOS PoP reads the bytes directly after tile_div_tbl[], that is: and tile_mod_tbl[]
-		// Here we simulate these reads.
-		// After tile_mod_tbl[] there are the following bytes:
-		static const byte bogus[] = {0xF4, 0x02, 0x10, 0x1E, 0x2C, 0x3A, 0x48, 0x56, 0x64, 0x72, 0x80, 0x8E, 0x9C, 0xAA, 0xB8, 0xC6, 0xD4, 0xE2, 0xF0, 0xFE, 0x00, 0x0A, 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x0D, 0x00, 0x00, 0x00, 0x00};
-		if (xpos-tblSize < COUNT(bogus)) {
-			xh = tile_mod_tbl[xpos-tblSize]; // simulating tile_div_tbl[xpos]
-			xl = bogus[xpos-tblSize]; // simulating tile_mod_tbl[xpos]
-		} else {
-			printf("xpos = %d (> %d) out of range for simulation of index overflow!\n", xpos, (int)COUNT(bogus)+tblSize);
-		}
-	}
-
 	obj_xl = xl;
 	return xh;
 }
 
+// seg006:0406
+#if 0
+int __pascal far sub_70B6(int ypos) {
+	// This function is not used.
+	short row;
+	for (row = 3; row >= -1; --row) {
+		if (y_land[row + 1] <= ypos) return row;
+	}
+}
+#endif // 0
+
 // seg006:0433
-int y_to_row_mod4(int ypos) {
-	return (ypos + 60) / TILE_SIZEY % 4 - 1;
+int __pascal far y_to_row_mod4(int ypos) {
+	return (ypos + 60) / 63 % 4 - 1;
 }
 
 // seg006:044F
-void loadkid() {
+void __pascal far loadkid() {
 	Char = Kid;
 }
 
 // seg006:0464
-void savekid() {
+void __pascal far savekid() {
 	Kid = Char;
 }
 
 // seg006:0479
-void loadshad() {
+void __pascal far loadshad() {
 	Char = Guard;
 }
 
 // seg006:048E
-void saveshad() {
+void __pascal far saveshad() {
 	Guard = Char;
 }
 
 // seg006:04A3
-void loadkid_and_opp() {
+void __pascal far loadkid_and_opp() {
 	loadkid();
 	Opp = Guard;
 }
 
 // seg006:04BC
-void savekid_and_opp() {
+void __pascal far savekid_and_opp() {
 	savekid();
 	Guard = Opp;
 }
 
 // seg006:04D5
-void loadshad_and_opp() {
+void __pascal far loadshad_and_opp() {
 	loadshad();
 	Opp = Kid;
 }
 
 // seg006:04EE
-void saveshad_and_opp() {
+void __pascal far saveshad_and_opp() {
 	saveshad();
 	Kid = Opp;
 }
 
 // seg006:0507
-void reset_obj_clip() {
+void __pascal far reset_obj_clip() {
 	obj_clip_left = 0;
 	obj_clip_top = 0;
 	obj_clip_right = 320;
@@ -858,11 +757,7 @@ void reset_obj_clip() {
 }
 
 // seg006:051C
-void x_to_xh_and_xl(int xpos, sbyte* xh_addr, sbyte* xl_addr) {
-#ifdef FIX_SPRITE_XPOS
-	*xh_addr = xpos >> 3;
-	*xl_addr = xpos & 7;
-#else
+void __pascal far x_to_xh_and_xl(int xpos, sbyte *xh_addr, sbyte *xl_addr) {
 	if (xpos < 0) {
 		*xh_addr = -((ABS(-xpos) >> 3) + 1);
 		*xl_addr = - ((-xpos - 1) % 8 - 7);
@@ -870,76 +765,48 @@ void x_to_xh_and_xl(int xpos, sbyte* xh_addr, sbyte* xl_addr) {
 		*xh_addr = ABS(xpos) >> 3;
 		*xl_addr = xpos % 8;
 	}
-#endif
 }
 
 // seg006:057C
-void fall_accel() {
+void __pascal far fall_accel() {
 	if (Char.action == actions_4_in_freefall) {
-		if (is_feather_fall
-#ifdef FIX_FEATHER_FALL_AFFECTS_GUARDS
-			// Only the prince should be affected if the fix is on.
-			&& (!fixes->fix_feather_fall_affects_guards || Char.charid == charid_0_kid)
-#endif
-		) {
-			Char.fall_y += FALLING_SPEED_ACCEL_FEATHER;
-			if (Char.fall_y > FALLING_SPEED_MAX_FEATHER) Char.fall_y = FALLING_SPEED_MAX_FEATHER;
+		if (is_feather_fall) {
+			++Char.fall_y;
+			if (Char.fall_y > 4) Char.fall_y = 4;
 		} else {
-			Char.fall_y += FALLING_SPEED_ACCEL;
-			if (Char.fall_y > FALLING_SPEED_MAX) Char.fall_y = FALLING_SPEED_MAX;
+			Char.fall_y += 3;
+			if (Char.fall_y > 33) Char.fall_y = 33;
 		}
 	}
 }
 
 // seg006:05AE
-void fall_speed() {
+void __pascal far fall_speed() {
 	Char.y += Char.fall_y;
-#ifdef USE_SUPER_HIGH_JUMP
-	// Do not fall forward during super high jumps
-	if (Char.action == actions_4_in_freefall && (!fixes->enable_super_high_jump || super_jump_fall == 0)) {
-#else
 	if (Char.action == actions_4_in_freefall) {
-#endif
 		Char.x = char_dx_forward(Char.fall_x);
 		load_fram_det_col();
 	}
 }
 
 // seg006:05CD
-void check_action() {
-	short action = Char.action;
-	short frame = Char.frame;
-#ifdef USE_JUMP_GRAB
-    // Prince can grab tiles during a jump if Shift and up arrow, but not forward arrow, keys are pressed.
-    if (fixes->enable_jump_grab && action == actions_1_run_jump && control_shift == CONTROL_HELD && check_grab_run_jump()) {
-        return;
-    }
-#endif
+void __pascal far check_action() {
+	short frame;
+	short action;
+	action = Char.action;
+	frame = Char.frame;
 	// frame 109: crouching
 	if (action == actions_6_hang_straight ||
 		action == actions_5_bumped
 	) {
-		if (frame == frame_109_crouch
-
-			#ifdef FIX_STAND_ON_THIN_AIR
-			|| (fixes->fix_stand_on_thin_air &&
-				frame >= frame_110_stand_up_from_crouch_1 && frame <= frame_119_stand_up_from_crouch_10)
-			#endif
-
-			#ifdef FIX_DEAD_FLOATING_IN_AIR
-			// action == actions_5_bumped if the prince is lying dead.
-			|| (fixes->fix_dead_floating_in_air &&
-				frame >= frame_177_spiked && frame <= frame_185_dead)
-			#endif
-
-				) {
+		if (frame == 109) {
 			check_on_floor();
 		}
 	} else if (action == actions_4_in_freefall) {
 		do_fall();
 	} else if (action == actions_3_in_midair) {
 		// frame 102..106: start fall + fall
-		if (frame >= frame_102_start_fall_1 && frame < frame_106_fall) {
+		if (frame >= 102 && frame < 106) {
 			check_grab();
 		}
 	} else if (action != actions_2_hang_climb) {
@@ -948,7 +815,7 @@ void check_action() {
 }
 
 // seg006:0628
-int tile_is_floor(int tiletype) {
+int __pascal far tile_is_floor(int tiletype) {
 	switch (tiletype) {
 		case tiles_0_empty:
 		case tiles_9_bigpillar_top:
@@ -965,17 +832,19 @@ int tile_is_floor(int tiletype) {
 }
 
 // seg006:0658
-void check_spiked() {
-	short frame = Char.frame;
+void __pascal far check_spiked() {
+	short harmful;
+	short frame;
+	frame = Char.frame;
 	if (get_tile(Char.room, Char.curr_col, Char.curr_row) == tiles_2_spike) {
-		short harmful = is_spike_harmful();
+		harmful = is_spike_harmful();
 		// frames 7..14: running
 		// frames 34..39: start run-jump
 		// frame 43: land from run-jump
 		// frame 26: lang from standing jump
 		if (
-			(harmful >= 2 && ((frame>= frame_7_run && frame<15) || (frame>=frame_34_start_run_jump_1 && frame<40))) ||
-			((frame == frame_43_running_jump_4 || frame == frame_26_standing_jump_11) && harmful != 0)
+			(harmful >= 2 && ((frame>=7 && frame<15) || (frame>=34 && frame<40))) ||
+			((frame == 43 || frame == 26) && harmful != 0)
 		) {
 			spiked();
 		}
@@ -983,8 +852,9 @@ void check_spiked() {
 }
 
 // seg006:06BD
-int take_hp(int count) {
-	word dead = 0;
+int __pascal far take_hp(int count) {
+	word dead;
+	dead = 0;
 	if (Char.charid == charid_0_kid) {
 		if (count >= hitp_curr) {
 			hitp_delta = -hitp_curr;
@@ -1004,14 +874,25 @@ int take_hp(int count) {
 }
 
 // seg006:070D
-int get_tile_at_char() {
+int __pascal far get_tile_at_char() {
 	return get_tile(Char.room, Char.curr_col, Char.curr_row);
 }
 
 // seg006:0723
-void set_char_collision() {
-	image_type* image = get_image(obj_chtab, obj_id);
+void __pascal far set_char_collision() {
+	image_type* image;
+	if (obj_id < 0 || obj_id >= chtab_addrs[obj_chtab]->n_images) {
+		//printf("set_char_collision: from chtab %d (%d images) trying to use out-of-range image index %d\n", obj_chtab, chtab_addrs[obj_chtab]->n_images, obj_id);
+		//quit(1);
+		// After going up the level door, obj_id=255.
+		//return;
+		image = NULL;
+	} else {
+		image = chtab_addrs[obj_chtab]->pointers[obj_id];
+	}
 	if (image == NULL) {
+		//printf("set_char_collision: from chtab %d (%d images) trying to use NULL image %d\n", obj_chtab, chtab_addrs[obj_chtab]->n_images, obj_id);
+		//quit(1);
 		char_width_half = 0;
 		char_height = 0;
 	} else {
@@ -1035,7 +916,7 @@ void set_char_collision() {
 	}
 	char_col_left = MAX(get_tile_div_mod(char_x_left), 0);
 	char_col_right = MIN(get_tile_div_mod(char_x_right), 9);
-	if (cur_frame.flags & FRAME_THIN) {
+	if (cur_frame.flags & 0x20) {
 		// "thin" this frame for collision detection
 		char_x_left_coll += 4;
 		char_x_right_coll -= 4;
@@ -1043,27 +924,15 @@ void set_char_collision() {
 }
 
 // seg006:0815
-void check_on_floor() {
-	if (cur_frame.flags & FRAME_NEEDS_FLOOR) {
-#ifdef FIX_FALLING_THROUGH_FLOOR_DURING_SWORD_STRIKE
-        // We do not want the Prince or a guard to fall during that frame because it looks like he is falling
-        // through a floor. It is caused by a combination of the frame width and the dx value in the frame table.
-        // Other 3 frames in the sequence do not have the "FRAME_NEEDS_FLOOR" flag enabled but the frame 153 does.
-        if (fixes->fix_falling_through_floor_during_sword_strike) {
-			if (Char.frame == frame_153_strike_3) return;
-        }
-#endif
+void __pascal far check_on_floor() {
+	if (cur_frame.flags & 0x40) {
 		if (get_tile_at_char() == tiles_20_wall) {
 			in_wall();
 		}
 		if (! tile_is_floor(curr_tile2)) {
 			// Special event: floors appear
 			if (current_level == 12 &&
-#ifndef FIX_HIDDEN_FLOORS_DURING_FLASHING
 				united_with_shadow < 0 &&
-#else
-				(united_with_shadow < 0 || (fixes->fix_hidden_floors_during_flashing && united_with_shadow > 0)) &&
-#endif
 				Char.curr_row == 0 &&
 				(Char.room == 2 || (Char.room == 13 && tile_col >= 6))
 			) {
@@ -1074,21 +943,6 @@ void check_on_floor() {
 				set_wipe(curr_tilepos, 1);
 				set_redraw_full(curr_tilepos, 1);
 			} else {
-
-#ifdef FIX_STAND_ON_THIN_AIR
-				if (fixes->fix_stand_on_thin_air &&
-					Char.frame >= frame_110_stand_up_from_crouch_1 && Char.frame <= frame_119_stand_up_from_crouch_10)
-				{
-					// We need to prevent the Kid from stepping off a ledge accidentally while standing up.
-					// (This can happen because the "standing up" frames now require a floor.)
-					// --> Cancel the fall, if the tile at dx=2 behind the kid is a valid floor.
-					int col = get_tile_div_mod_m7(dx_weight() + back_delta_x(2));
-					if (tile_is_floor(get_tile(Char.room, col, Char.curr_row))) {
-						return;
-					}
-				}
-#endif
-
 				start_fall();
 			}
 		}
@@ -1096,28 +950,29 @@ void check_on_floor() {
 }
 
 // seg006:08B9
-void start_fall() {
+void __pascal far start_fall() {
+	short frame;
 	word seq_id;
-	short frame = Char.frame;
-	Char.sword = sword_0_sheathed;
+	frame = Char.frame;
+	Char.sword = 0;
 	inc_curr_row();
 	start_chompers();
 	fall_frame = frame;
-	if (frame == frame_9_run) {
+	if (frame == 9) {
 		// frame 9: run
-		seq_id = seq_7_fall; // fall (when?)
-	} else if (frame == frame_13_run) {
+		seq_id = 7; // fall (when?)
+	} else if (frame == 13) {
 		// frame 13: run
-		seq_id = seq_19_fall; // fall (when?)
-	} else if (frame == frame_26_standing_jump_11) {
+		seq_id = 19; // fall (when?)
+	} else if (frame == 26) {
 		// frame 26: land after standing jump
-		seq_id = seq_18_fall_after_standing_jump; // fall after standing jump
-	} else if (frame == frame_44_running_jump_5) {
+		seq_id = 18; // fall after standing jump
+	} else if (frame == 44) {
 		// frame 44: land after running jump
-		seq_id = seq_21_fall_after_running_jump; // fall after running jump
-	} else if (frame >= frame_81_hangdrop_1 && frame < 86) {
+		seq_id = 21; // fall after running jump
+	} else if (frame >= 81 && frame < 86) {
 		// frame 81..85: land after jump up
-		seq_id = seq_19_fall; // fall after jumping up
+		seq_id = 19; // fall after jumping up
 		Char.x = char_dx_forward(5);
 		load_fram_det_col();
 	} else if (frame >= 150 && frame < 180) {
@@ -1128,23 +983,23 @@ void start_fall() {
 				return;
 			}
 			if (Char.fall_x < 0) {
-				seq_id = seq_82_guard_pushed_off_ledge; // Guard is pushed off the ledge
+				seq_id = 82; // Guard is pushed off the ledge
 				if (Char.direction < dir_0_right && distance_to_edge_weight() <= 7) {
 					Char.x = char_dx_forward(-5);
 				}
 			} else {
-				droppedout = 0;
-				seq_id = seq_83_guard_fall; // fall after forwarding with sword
+				word_1EA12 = 0;
+				seq_id = 83; // fall after forwarding with sword
 			}
 		} else {
-			droppedout = 1;
+			word_1EA12 = 1;
 			if (Char.direction < dir_0_right && distance_to_edge_weight() <= 7) {
 				Char.x = char_dx_forward(-5);
 			}
-			seq_id = seq_81_kid_pushed_off_ledge; // fall after backing with sword / Kid is pushed off the ledge
+			seq_id = 81; // fall after backing with sword / Kid is pushed off the ledge
 		}
 	} else {
-		seq_id = seq_7_fall; // fall after stand, run, step, crouch
+		seq_id = 7; // fall after stand, run, step, crouch
 	}
 	seqtbl_offset_char(seq_id);
 	play_seq();
@@ -1153,20 +1008,11 @@ void start_fall() {
 		in_wall();
 		return;
 	}
-	int tile = get_tile_infrontof_char();
-	if (tile == tiles_20_wall
-
-		#ifdef FIX_RUNNING_JUMP_THROUGH_TAPESTRY
-			// Also treat tapestries (when approached to the left) like a wall here.
-		|| (fixes->fix_running_jump_through_tapestry && Char.direction == dir_FF_left &&
-			(tile == tiles_12_doortop || tile == tiles_7_doortop_with_floor))
-		#endif
-
-			) {
+	if (get_tile_infrontof_char() == tiles_20_wall) {
 		if (fall_frame != 44 || distance_to_edge_weight() >= 6) {
 			Char.x = char_dx_forward(-1);
 		} else {
-			seqtbl_offset_char(seq_104_start_fall_in_front_of_wall); // start fall (when?)
+			seqtbl_offset_char(104); // start fall (when?)
 			play_seq();
 		}
 		load_fram_det_col();
@@ -1174,123 +1020,42 @@ void start_fall() {
 }
 
 // seg006:0A19
-void check_grab() {
+void __pascal far check_grab() {
 	word old_x;
-
-	#ifdef FIX_GRAB_FALLING_SPEED
-	#define MAX_GRAB_FALLING_SPEED (fixes->fix_grab_falling_speed ? 30 : 32)
-	#else
-	#define MAX_GRAB_FALLING_SPEED 32
-	#endif
-
-#ifdef USE_SUPER_HIGH_JUMP
-	if ((control_shift == CONTROL_HELD || (fixes->enable_super_high_jump && super_jump_fall && control_y == CONTROL_HELD_UP)) && // press shift or up arrow to grab
-#else
-	if (control_shift == CONTROL_HELD && // press Shift to grab
-#endif
-		Char.fall_y < MAX_GRAB_FALLING_SPEED && // you can't grab if you're falling too fast ...
+	if (control_shift < 0 && // press shift to grab
+		Char.fall_y < 32 && // you can't grab if you're falling too fast ...
 		Char.alive < 0 && // ... or dead
 		(word)y_land[Char.curr_row + 1] <= (word)(Char.y + 25)
 	) {
-		//printf("Falling speed: %d\t x: %d\n", Char.fall_y, Char.x);
 		old_x = Char.x;
-#ifdef USE_SUPER_HIGH_JUMP
-// delta_x makes grabbing easier
-#define SUPER_HIGH_JUMP_DELTA_X (Char.direction == dir_FF_left ? 3 : 4)
-		Char.x = char_dx_forward(-8 + (fixes->enable_super_high_jump && super_jump_fall ? SUPER_HIGH_JUMP_DELTA_X : 0));
-#else
 		Char.x = char_dx_forward(-8);
-#endif
 		load_fram_det_col();
 		if ( ! can_grab_front_above()) {
 			Char.x = old_x;
 		} else {
-#ifdef USE_SUPER_HIGH_JUMP
-			Char.x = char_dx_forward(distance_to_edge_weight() - (fixes->enable_super_high_jump && super_jump_fall ? SUPER_HIGH_JUMP_DELTA_X : 0));
-#else
 			Char.x = char_dx_forward(distance_to_edge_weight());
-#endif
 			Char.y = y_land[Char.curr_row + 1];
 			Char.fall_y = 0;
-			seqtbl_offset_char(seq_15_grab_ledge_midair); // grab a ledge (after falling)
+			seqtbl_offset_char(15); // grab a ledge (after falling)
 			play_seq();
-			grab_timer = 12;
-			play_sound(sound_9_grab); // grab
+			word_1E18A = 12;
+			play_sound(9); // grab
 			is_screaming = 0;
-#ifdef FIX_CHOMPERS_NOT_STARTING
-			if (fixes->fix_chompers_not_starting) start_chompers();
-#endif
 		}
 	}
 }
 
-#ifdef USE_JUMP_GRAB
-bool check_grab_run_jump() {
-    // grabbing distance:
-    // running jump - about 2.5 tiles or closer
-    // standing jump - just over 1 tile, enough to jump over an abyss/obstacle
-    word frame = Char.frame;
-    bool is_jump = frame >= frame_22_standing_jump_7 && frame <= frame_23_standing_jump_8;
-    bool is_running_jump = frame >= frame_39_start_run_jump_6 && frame <= frame_41_running_jump_2;
-    short char_room_m1 = Char.room - 1;
-    if (Char.action == actions_1_run_jump &&
-            (is_jump || is_running_jump) &&
-            control_x == CONTROL_RELEASED && control_y == CONTROL_HELD_UP) {
-        if (can_grab_front_above()) { // can grab a ledge at a specific frame during a jump
-            short grab_tile = curr_tile2;
-            short grab_col = tile_col;
-            // Prince's and tile rooms can get out of sync at the edge of a room
-            // causing teleportation.
-            if (curr_room != Char.room) {
-                short left_room = level.roomlinks[char_room_m1].left;
-                short right_room = level.roomlinks[char_room_m1].right;
-                short up_room = level.roomlinks[char_room_m1].up;
-                if (curr_room == right_room) {
-                    grab_col += 10;
-                } else if (curr_room == left_room) {
-                    grab_col -= 10;
-                } else if (right_room && curr_room == level.roomlinks[right_room - 1].up) {
-                    grab_col += 10;
-                } else if (left_room && curr_room == level.roomlinks[left_room - 1].up) {
-                    grab_col -= 10;
-                } else if (up_room && curr_room == level.roomlinks[up_room - 1].right) {
-                    grab_col += 10;
-                } else if (up_room && curr_room == level.roomlinks[up_room - 1].left) {
-                    grab_col -= 10;
-                }
-            }
-            Char.x = x_bump[grab_col + FIRST_ONSCREEN_COLUMN] + TILE_MIDX;
-            Char.x = char_dx_forward(Char.direction == dir_FF_left ? -12 : 2);
-            Char.y = y_land[Char.curr_row + 1];
-            seqtbl_offset_char(seq_9_grab_while_jumping); // grab a ledge
-            play_seq();
-            grab_timer = 12;
-            play_sound(sound_9_grab); // grab
-            // check_press() is not going to work on the next frame if Shift is released immediately
-            // because Char.frame changes to frame_81_hangdrop_1.
-            if (grab_tile == tiles_15_opener || grab_tile == tiles_6_closer) {
-                trigger_button(1, 0, -1);
-            } else if (grab_tile == tiles_11_loose) {
-                is_guard_notice = 1;
-                make_loose_fall(1);
-            }
-            return 1;
-        }
-    }
-    return 0;
-}
-#endif
-
 // seg006:0ABD
-int can_grab_front_above() {
+int __pascal far can_grab_front_above() {
 	through_tile = get_tile_above_char();
 	get_tile_front_above_char();
 	return can_grab();
 }
 
 // seg006:0ACD
-void in_wall() {
-	short delta_x = distance_to_edge_weight();
+void __pascal far in_wall() {
+	short delta_x;
+	delta_x = distance_to_edge_weight();
 	if (delta_x >= 8 || get_tile_infrontof_char() == tiles_20_wall) {
 		delta_x = 6 - delta_x;
 	} else {
@@ -1302,50 +1067,50 @@ void in_wall() {
 }
 
 // seg006:0B0C
-int get_tile_infrontof_char() {
-	infrontx = dir_front[Char.direction + 1] + Char.curr_col;
-	return get_tile(Char.room, infrontx, Char.curr_row);
+int __pascal far get_tile_infrontof_char() {
+	return get_tile(Char.room, byte_20C62 = dir_front[Char.direction + 1] + Char.curr_col, Char.curr_row);
 }
 
 // seg006:0B30
-int get_tile_infrontof2_char() {
-	short direction = dir_front[Char.direction + 1];
-	infrontx = (direction << 1) + Char.curr_col;
-	return get_tile(Char.room, infrontx, Char.curr_row);
+int __pascal far get_tile_infrontof2_char() {
+	short var_2;
+	var_2 = dir_front[Char.direction + 1];
+	return get_tile(Char.room, byte_20C62 = (var_2 << 1) + Char.curr_col, Char.curr_row);
 }
 
 // seg006:0B66
-int get_tile_behind_char() {
-	return get_tile(Char.room, dir_behind[Char.direction + 1] + Char.curr_col, Char.curr_row);
+int __pascal far get_tile_behind_char() {
+	return get_tile(Char.room, byte_1EFD2 = dir_behind[Char.direction + 1] + Char.curr_col, Char.curr_row);
 }
 
 // seg006:0B8A
-int distance_to_edge_weight() {
+int __pascal far distance_to_edge_weight() {
 	return distance_to_edge(dx_weight());
 }
 
 // seg006:0B94
-int distance_to_edge(int xpos) {
+int __pascal far distance_to_edge(int xpos) {
+	short var_2;
 	get_tile_div_mod_m7(xpos);
-	short distance = obj_xl;
+	var_2 = obj_xl;
 	if (Char.direction == dir_0_right) {
-		distance = TILE_RIGHTX - distance;
+		var_2 = 13 - var_2;
 	}
-	return distance;
+	return var_2;
 }
 
 // seg006:0BC4
-void fell_out() {
+void __pascal far fell_out() {
 	if (Char.alive < 0 && Char.room == 0) {
 		take_hp(100);
 		Char.alive = 0;
 		erase_bottom_text(1);
-		Char.frame = frame_185_dead; // dead
+		Char.frame = 185; // dead
 	}
 }
 
 // seg006:0BEE
-void play_kid() {
+void __pascal far play_kid() {
 	fell_out();
 	control_kid();
 	if (Char.alive >= 0 && is_dead()) {
@@ -1353,7 +1118,7 @@ void play_kid() {
 			stop_sounds();
 			loadkid();
 			hitp_delta = hitp_max;
-			seqtbl_offset_char(seq_2_stand); // stand
+			seqtbl_offset_char(2); // stand
 			Char.x += 8;
 			play_seq();
 			load_fram_det_col();
@@ -1391,54 +1156,38 @@ void play_kid() {
 }
 
 // seg006:0CD1
-void control_kid() {
+void __pascal far control_kid() {
+	word key;
 	if (Char.alive < 0 && hitp_curr == 0) {
 		Char.alive = 0;
-		// stop feather fall when kid dies
-		if (fixes->fix_quicksave_during_feather && is_feather_fall > 0) {
-			is_feather_fall = 0;
-			if (check_sound_playing()) {
-				stop_sounds();
-			}
-		}
 	}
-	if (grab_timer != 0) {
-		--grab_timer;
+	if (word_1E18A != 0) {
+		--word_1E18A;
 	}
-#ifdef USE_REPLAY
-	if (current_level == 0 && !play_demo_level && !replaying) {
-#else
-	if (current_level == 0 && !play_demo_level) {
-#endif
+	if (current_level == 0) {
 		do_demo();
 		control();
-		// The player can start a new game or load a saved game during the demo.
-		word key = key_test_quit();
-		if (key == (SDL_SCANCODE_L | WITH_CTRL)) { // Ctrl+L
+		// we can start the game or load a game while the demo
+		key = key_test_quit();
+		if (key == 0x0C) { // ctrl-L
 			if (load_game()) {
 				start_game();
 			}
 		} else {
 			if (key) {
-				start_level = custom->first_level; // 1
+				start_level = 1;
 				start_game();
 			}
 		}
 	} else {
 		rest_ctrl_1();
 		do_paused();
-		#ifdef USE_REPLAY
-		if (recording) add_replay_move();
-		if (replaying) do_replay_move();
-		#endif
 		read_user_control();
 		user_control();
 		save_ctrl_1();
 	}
 }
 
-// This was moved to custom_options_type.
-/*
 const auto_move_type demo_moves[] = {
 {0x00, 0},
 {0x01, 1},
@@ -1466,25 +1215,23 @@ const auto_move_type demo_moves[] = {
 {0xCD, 0},
 {0xE9,-1},
 };
-*/
 
 // seg006:0D49
-void do_demo() {
+void __pascal far do_demo() {
 	if (checkpoint) {
 		control_shift2 = release_arrows();
-		control_forward = CONTROL_HELD;
-		control_x = CONTROL_HELD_FORWARD;
+		control_forward = control_x = -1;
 	} else if (Char.sword) {
 		guard_skill = 10;
 		autocontrol_opponent();
 		guard_skill = 11;
 	} else {
-		do_auto_moves(custom->demo_moves);
+		do_auto_moves(demo_moves);
 	}
 }
 
 // seg006:0D85
-void play_guard() {
+void __pascal far play_guard() {
 	if (Char.charid == charid_24_mouse) {
 		autocontrol_opponent();
 	} else {
@@ -1506,7 +1253,7 @@ void play_guard() {
 }
 
 // seg006:0DC0
-void user_control() {
+void __pascal far user_control() {
 	if (Char.direction >= dir_0_right) {
 		flip_control_x();
 		control();
@@ -1517,21 +1264,22 @@ void user_control() {
 }
 
 // seg006:0DDC
-void flip_control_x() {
+void __pascal far flip_control_x() {
+	byte temp;
 	control_x = -control_x;
-	byte temp = control_forward;
+	temp = control_forward;
 	control_forward = control_backward;
 	control_backward = temp;
 }
 
 // seg006:0E00
-int release_arrows() {
-	control_backward = control_forward = control_up = control_down = CONTROL_RELEASED;
+int __pascal far release_arrows() {
+	control_backward = control_forward = control_up = control_down = 0;
 	return 1;
 }
 
 // seg006:0E12
-void save_ctrl_1() {
+void __pascal far save_ctrl_1() {
 	ctrl1_forward = control_forward;
 	ctrl1_backward = control_backward;
 	ctrl1_up = control_up;
@@ -1540,7 +1288,7 @@ void save_ctrl_1() {
 }
 
 // seg006:0E31
-void rest_ctrl_1() {
+void __pascal far rest_ctrl_1() {
 	control_forward = ctrl1_forward;
 	control_backward = ctrl1_backward;
 	control_up = ctrl1_up;
@@ -1548,64 +1296,72 @@ void rest_ctrl_1() {
 	control_shift2 = ctrl1_shift2;
 }
 
+// seg006:0E50 ; void __pascal far save_ctrl_2()
+// This function is not used.
+
+// seg006:0E6F ; void __pascal far rest_ctrl_2()
+// This function is not used.
+
 // seg006:0E8E
-void clear_saved_ctrl() {
-	ctrl1_forward = ctrl1_backward = ctrl1_up = ctrl1_down = ctrl1_shift2 = CONTROL_RELEASED;
+void __pascal far clear_saved_ctrl() {
+	ctrl1_forward = ctrl1_backward = ctrl1_up = ctrl1_down = ctrl1_shift2 =
+	/*ctrl2_forward = ctrl2_backward = ctrl2_up = ctrl2_down = ctrl2_shift2 =*/ 0;
 }
 
 // seg006:0EAF
-void read_user_control() {
-	if (control_forward >= CONTROL_RELEASED) {
-		if (control_x == CONTROL_HELD_FORWARD) {
-			if (control_forward == CONTROL_RELEASED) {
-				control_forward = CONTROL_HELD;
+void __pascal far read_user_control() {
+	if (control_forward >= 0) {
+		if (control_x < 0) {
+			if (control_forward == 0) {
+				control_forward = -1;
 			}
 		} else {
-			control_forward = CONTROL_RELEASED;
+			control_forward = 0;
 		}
 	}
-	if (control_backward >= CONTROL_RELEASED) {
-		if (control_x == CONTROL_HELD_BACKWARD) {
-			if (control_backward == CONTROL_RELEASED) {
-				control_backward = CONTROL_HELD;
+	if (control_backward >= 0) {
+		if (control_x == 1) {
+			if (control_backward == 0) {
+				control_backward = -1;
 			}
 		} else {
-			control_backward = CONTROL_RELEASED;
+			control_backward = 0;
 		}
 	}
-	if (control_up >= CONTROL_RELEASED) {
-		if (control_y == CONTROL_HELD_UP) {
-			if (control_up == CONTROL_RELEASED) {
-				control_up = CONTROL_HELD;
+	if (control_up >= 0) {
+		if (control_y < 0) {
+			if (control_up == 0) {
+				control_up = -1;
 			}
 		} else {
-			control_up = CONTROL_RELEASED;
+			control_up = 0;
 		}
 	}
-	if (control_down >= CONTROL_RELEASED) {
-		if (control_y == CONTROL_HELD_DOWN) {
-			if (control_down == CONTROL_RELEASED) {
-				control_down = CONTROL_HELD;
+	if (control_down >= 0) {
+		if (control_y == 1) {
+			if (control_down == 0) {
+				control_down = -1;
 			}
 		} else {
-			control_down = CONTROL_RELEASED;
+			control_down = 0;
 		}
 	}
-	if (control_shift2 >= CONTROL_RELEASED) {
-		if (control_shift == CONTROL_HELD) {
-			if (control_shift2 == CONTROL_RELEASED) {
-				control_shift2 = CONTROL_HELD;
+	if (control_shift2 >= 0) {
+		if (control_shift < 0) {
+			if (control_shift2 == 0) {
+				control_shift2 = -1;
 			}
 		} else {
-			control_shift2 = CONTROL_RELEASED;
+			control_shift2 = 0;
 		}
 	}
 }
 
 // seg006:0F55
-int can_grab() {
+int __pascal far can_grab() {
 	// Can char grab curr_tile2 through through_tile?
-	byte modifier = curr_room_modif[curr_tilepos];
+	byte modifier;
+	modifier = curr_room_modif[curr_tilepos];
 	// can't grab through wall
 	if (through_tile == tiles_20_wall) return 0;
 	// can't grab through a door top if looking right
@@ -1613,8 +1369,7 @@ int can_grab() {
 	// can't grab through floor
 	if (tile_is_floor(through_tile)) return 0;
 	// can't grab a shaking loose floor
-	// Allow climbing onto a shaking loose floor if the delay is greater than the default. TODO: This should be a separate option.
-	if (curr_tile2 == tiles_11_loose && modifier != 0 && !(custom->loose_floor_delay > 11)) return 0;
+	if (curr_tile2 == tiles_11_loose && modifier != 0) return 0;
 	// a doortop with floor can be grabbed only from the left (looking right)
 	if (curr_tile2 == tiles_7_doortop_with_floor && Char.direction < dir_0_right) return 0;
 	// can't grab something that has no floor
@@ -1623,7 +1378,7 @@ int can_grab() {
 }
 
 // seg006:0FC3
-int wall_type(byte tiletype) {
+int __pascal far wall_type(byte tiletype) {
 	switch (tiletype) {
 		case tiles_4_gate:
 		case tiles_7_doortop_with_floor:
@@ -1641,23 +1396,22 @@ int wall_type(byte tiletype) {
 }
 
 // seg006:1005
-int get_tile_above_char() {
-	return get_tile(Char.room, Char.curr_col, Char.curr_row - 1);
+int __pascal far get_tile_above_char() {
+	return get_tile(Char.room, Char.curr_col, byte_1F00E = Char.curr_row - 1);
 }
 
 // seg006:1020
-int get_tile_behind_above_char() {
-	return get_tile(Char.room, dir_behind[Char.direction + 1] + Char.curr_col, Char.curr_row - 1);
+int __pascal far get_tile_behind_above_char() {
+	return get_tile(Char.room, byte_1EFD2 = dir_behind[Char.direction + 1] + Char.curr_col, byte_1F00E = Char.curr_row - 1);
 }
 
 // seg006:1049
-int get_tile_front_above_char() {
-	infrontx = dir_front[Char.direction + 1] + Char.curr_col;
-	return get_tile(Char.room, infrontx, Char.curr_row - 1);
+int __pascal far get_tile_front_above_char() {
+	return get_tile(Char.room, byte_20C62 = dir_front[Char.direction + 1] + Char.curr_col, byte_1F00E = Char.curr_row - 1);
 }
 
 // seg006:1072
-int back_delta_x(int delta_x) {
+int __pascal far back_delta_x(int delta_x) {
 	if (Char.direction < dir_0_right) {
 		// direction = left
 		return delta_x;
@@ -1668,9 +1422,11 @@ int back_delta_x(int delta_x) {
 }
 
 // seg006:108A
-void do_pickup(int obj_type) {
+void __pascal far do_pickup(int obj_type) {
 	pickup_obj_type = obj_type;
-	control_shift2 = CONTROL_IGNORE;
+	//word_1EFAC = curr_room; // not used anywhere else
+	//word_1EFDA = curr_tilepos; // not used anywhere else
+	control_shift2 = 1;
 	// erase picked up item
 	curr_room_tiles[curr_tilepos] = tiles_1_floor;
 	curr_room_modif[curr_tilepos] = 0;
@@ -1680,25 +1436,24 @@ void do_pickup(int obj_type) {
 }
 
 // seg006:10E6
-void check_press() {
-	short frame = Char.frame;
-	short action = Char.action;
+void __pascal far check_press() {
+	short frame;
+	short action;
+	frame = Char.frame;
+	action = Char.action;
 	// frames 87..99: hanging
 	// frames 135..140: start climb up
-	if ((frame >= frame_87_hanging_1 && frame < 100) || (frame >= frame_135_climbing_1 && frame < frame_141_climbing_7)) {
+	if ((frame >= 87 && frame < 100) || (frame >= 135 && frame < 141)) {
 		// the pressed tile is the one that the char is grabbing
 		get_tile_above_char();
 	} else if (action == actions_7_turn || action == actions_5_bumped || action < actions_2_hang_climb) {
 		// frame 79: jumping up
-		if (frame == frame_79_jumphang && get_tile_above_char() == tiles_11_loose) {
+		if (frame == 79 && get_tile_above_char() == tiles_11_loose) {
 			// break a loose floor from above
 			make_loose_fall(1);
 		} else {
 			// the pressed tile is the one that the char is standing on
-			if (! (cur_frame.flags & FRAME_NEEDS_FLOOR)) return;
-			#ifdef FIX_PRESS_THROUGH_CLOSED_GATES
-			if (fixes->fix_press_through_closed_gates) determine_col();
-			#endif
+			if (! (cur_frame.flags & 0x40)) return;
 			get_tile_at_char();
 		}
 	} else {
@@ -1706,7 +1461,7 @@ void check_press() {
 	}
 	if (curr_tile2 == tiles_15_opener || curr_tile2 == tiles_6_closer) {
 		if (Char.alive < 0) {
-			trigger_button(1, 0, -1);
+			trigger(1, 0, -1);
 		} else {
 			died_on_button();
 		}
@@ -1717,13 +1472,17 @@ void check_press() {
 }
 
 // seg006:1199
-void check_spike_below() {
+void __pascal far check_spike_below() {
 	short not_finished;
-	short right_col = get_tile_div_mod_m7(char_x_right);
+	short room;
+	short row;
+	short col;
+	short right_col;
+	right_col = get_tile_div_mod_m7(char_x_right);
 	if (right_col < 0) return;
-	short row = Char.curr_row;
-	short room = Char.room;
-	for (short col = get_tile_div_mod_m7(char_x_left); col <= right_col; ++col) {
+	row = Char.curr_row;
+	room = Char.room;
+	for (col = get_tile_div_mod_m7(char_x_left); col <= right_col; ++col) {
 		row = Char.curr_row;
 		do {
 			not_finished = 0;
@@ -1733,7 +1492,7 @@ void check_spike_below() {
 				! tile_is_floor(curr_tile2) &&
 				curr_room != 0 &&
 #ifdef FIX_INFINITE_DOWN_BUG
-				(fixes->fix_infinite_down_bug ? (row <= 2) : (room == curr_room))
+				row <= 2
 #else
 				room == curr_room
 #endif
@@ -1746,26 +1505,21 @@ void check_spike_below() {
 }
 
 // seg006:1231
-void clip_char() {
-	short frame = Char.frame;
-	short action = Char.action;
-	short room = Char.room;
-	short row = Char.curr_row;
+void __pascal far clip_char() {
+	short frame;
+	short room;
+	short action;
+	short col;
+	short var_A;
+	short row;
+	short var_E;
+	frame = Char.frame;
+	action = Char.action;
+	room = Char.room;
+	row = Char.curr_row;
 	reset_obj_clip();
-#ifdef USE_SUPER_HIGH_JUMP
-	// Clip kid during a super jump when jumping up into
-	// a tapestry with lattice
-	if (fixes->enable_super_high_jump &&
-		 (frame == frame_79_jumphang || frame == frame_106_fall)) {
-		int top_left_tile = get_tile(room, char_col_left - 1, y_to_row_mod4(char_top_y + 10));
-		if (top_left_tile == tiles_12_doortop && curr_room_modif[curr_tilepos] == 0 /* doortop with lattice */) {
-			obj_clip_top = y_land[tile_row + 1] - 22;
-			return;
-		}
-	}
-#endif
 	// frames 217..228: going up the level door
-	if (frame >= frame_224_exit_stairs_8 && frame < 229) {
+	if (frame >= 224 && frame < 229) {
 		obj_clip_top = leveldoor_ybottom + 1;
 		obj_clip_right = leveldoor_right;
 	} else {
@@ -1774,20 +1528,19 @@ void clip_char() {
 			tile_is_floor(curr_tile2)
 		) {
 			// frame 79: jump up, frame 81: grab
-			if ((action == actions_0_stand && (frame == frame_79_jumphang || frame == frame_81_hangdrop_1)) ||
+			if ((action == actions_0_stand && (frame == 79 || frame == 81)) ||
 				get_tile(room, char_col_right, char_top_row) == tiles_20_wall ||
 				tile_is_floor(curr_tile2)
 			) {
-				short clip_row = row + 1;
-				short clip_y = y_clip[clip_row];
-				if (clip_row == 1 ||
-					(clip_y < obj_y && clip_y - 15 < char_top_y)
+				var_E = row + 1;
+				if (var_E == 1 ||
+					((var_A = y_clip[var_E]) < obj_y && var_A - 15 < char_top_y)
 				) {
-					obj_clip_top = char_top_y = clip_y;
+					obj_clip_top = char_top_y = y_clip[var_E];
 				}
 			}
 		}
-		short col = get_tile_div_mod(char_x_left_coll - 4);
+		col = get_tile_div_mod(char_x_left_coll - 4);
 		if (get_tile(room, col + 1, row) == tiles_7_doortop_with_floor ||
 			curr_tile2 == tiles_12_doortop
 		) {
@@ -1796,18 +1549,17 @@ void clip_char() {
 			if ((get_tile(room, col, row) != tiles_7_doortop_with_floor &&
 				curr_tile2 != tiles_12_doortop) ||
 				action == actions_3_in_midair ||
-				(action == actions_4_in_freefall && frame == frame_106_fall) ||
-				(action == actions_5_bumped && frame == frame_107_fall_land_1) ||
+				(action == actions_4_in_freefall && frame == 106) ||
+				(action == actions_5_bumped && frame == 107) ||
 				(Char.direction < dir_0_right && (
 					action == actions_2_hang_climb ||
 					action == actions_6_hang_straight ||
 					(action == actions_1_run_jump &&
-					frame >= frame_137_climbing_3 && frame < frame_140_climbing_6)
+					frame >= 137 && frame < 140)
 				))
 			) {
-				col = get_tile_div_mod(char_x_right_coll);
 				if (
-					(get_tile(room, col, row) == tiles_20_wall ||
+					(get_tile(room, col = get_tile_div_mod(char_x_right_coll), row) == tiles_20_wall ||
 					(curr_tile2 == tiles_13_mirror && Char.direction == dir_0_right)) &&
 					(get_tile(room, col, char_top_row) == tiles_20_wall ||
 					curr_tile2 == tiles_13_mirror) &&
@@ -1823,16 +1575,18 @@ void clip_char() {
 }
 
 // seg006:13E6
-void stuck_lower() {
+void __pascal far stuck_lower() {
 	if (get_tile_at_char() == tiles_5_stuck) {
 		++Char.y;
 	}
 }
 
 // seg006:13F3
-void set_objtile_at_char() {
-	short char_frame = Char.frame;
-	short char_action = Char.action;
+void __pascal far set_objtile_at_char() {
+	short char_frame;
+	short char_action;
+	char_frame = Char.frame;
+	char_action = Char.action;
 	if (char_action == actions_1_run_jump) {
 		tile_row = char_bottom_row;
 		tile_col = char_col_left;
@@ -1841,7 +1595,7 @@ void set_objtile_at_char() {
 		tile_col = Char.curr_col;
 	}
 	// frame 135..148: climbing
-	if ((char_frame >= frame_135_climbing_1 && char_frame < 149) ||
+	if ((char_frame >= 135 && char_frame < 149) ||
 		char_action == actions_2_hang_climb ||
 		char_action == actions_3_in_midair ||
 		char_action == actions_4_in_freefall ||
@@ -1854,44 +1608,44 @@ void set_objtile_at_char() {
 }
 
 // seg006:1463
-void proc_get_object() {
+void __pascal far proc_get_object() {
 	if (Char.charid != charid_0_kid || pickup_obj_type == 0) return;
 	if (pickup_obj_type == -1) {
 		have_sword = -1;
-		play_sound(sound_37_victory); // get sword
-		flash_color = color_14_brightyellow;
+		play_sound(37); // get sword
+		flash_color = 14; // yellow
 		flash_time = 8;
 	} else {
-		switch (pickup_obj_type) {
-			case 1: // health
+		switch (--pickup_obj_type) {
+			case 0: // health
 				if (hitp_curr != hitp_max) {
 					stop_sounds();
-					play_sound(sound_33_small_potion); // small potion
+					play_sound(33); // small potion
 					hitp_delta = 1;
-					flash_color = color_4_red;
+					flash_color = 4; // red
 					flash_time = 2;
 				}
 			break;
-			case 2: // life
+			case 1: // life
 				stop_sounds();
-				play_sound(sound_30_big_potion); // big potion
-				flash_color = color_4_red;
+				play_sound(30); // big potion
+				flash_color = 4; // red
 				flash_time = 4;
 				add_life();
 			break;
-			case 3: // feather
+			case 2: // feather
 				feather_fall();
 			break;
-			case 4: // invert
+			case 3: // invert
 				toggle_upside();
 			break;
-			case 6: // open
+			case 5: // open
 				get_tile(8, 0, 0);
-				trigger_button(0, 0, -1);
+				trigger(0, 0, -1);
 			break;
-			case 5: // hurt
+			case 4: // hurt
 				stop_sounds();
-				play_sound(sound_13_kid_hurt); // Kid hurt (by potion)
+				play_sound(13); // Kid hurt (by potion)
 				// Special event: blue potions on potions level take half of HP
 				if (current_level == 15) {
 					hitp_delta = - ((hitp_max + 1) >> 1);
@@ -1903,46 +1657,49 @@ void proc_get_object() {
 	}
 }
 
+// seg006:1567 ; int __pascal far sub_8217()
+// Not used.
+
 // seg006:1599
-int is_dead() {
+int __pascal far is_dead() {
 	// 177: spiked, 178: chomped, 185: dead
 	// or maybe this was a switch-case?
-	return Char.frame >= frame_177_spiked && (Char.frame <= frame_178_chomped || Char.frame == frame_185_dead);
+	return Char.frame >= 177 && (Char.frame <= 178 || Char.frame == 185);
 }
 
 // seg006:15B5
-void play_death_music() {
+void __pascal far play_death_music() {
 	word sound_id;
 	if (Guard.charid == charid_1_shadow) {
-		sound_id = sound_32_shadow_music; // killed by shadow
+		sound_id = 32; // killed by shadow
 	} else if (holding_sword) {
-		sound_id = sound_28_death_in_fight; // death in fight
+		sound_id = 28; // death in fight
 	} else {
-		sound_id = sound_24_death_regular; // death not in fight
+		sound_id = 24; // death not in fight
 	}
 	play_sound(sound_id);
 }
 
 // seg006:15E8
-void on_guard_killed() {
+void __pascal far on_guard_killed() {
 	if (current_level == 0) {
 		// demo level: after killing Guard, run out of room
 		checkpoint = 1;
 		demo_index = demo_time = 0;
-	} else if (current_level == /*13*/ custom->jaffar_victory_level) {
+	} else if (current_level == 13) {
 		// Jaffar's level: flash
-		flash_color = color_15_brightwhite; // white
-		flash_time = /*18*/ custom->jaffar_victory_flash_time;
+		flash_color = 15; // white
+		flash_time = 18;
 		is_show_time = 1;
 		leveldoor_open = 2;
-		play_sound(sound_43_victory_Jaffar); // Jaffar's death
+		play_sound(43); // Jaffar's death
 	} else if (Char.charid != charid_1_shadow) {
-		play_sound(sound_37_victory); // Guard's death
+		play_sound(37); // Guard's death
 	}
 }
 
 // seg006:1634
-void clear_char() {
+void __pascal far clear_char() {
 	Char.direction = dir_56_none;
 	Char.alive = 0;
 	Char.action = 0;
@@ -1972,7 +1729,7 @@ short obj2_clip_left;
 short obj2_clip_right;
 
 // seg006:1654
-void save_obj() {
+void __pascal far save_obj() {
 	obj2_tilepos = obj_tilepos;
 	obj2_x = obj_x;
 	obj2_y = obj_y;
@@ -1986,7 +1743,7 @@ void save_obj() {
 }
 
 // seg006:1691
-void load_obj() {
+void __pascal far load_obj() {
 	obj_tilepos = obj2_tilepos;
 	obj_x = obj2_x;
 	obj_y = obj2_y;
@@ -2000,17 +1757,18 @@ void load_obj() {
 }
 
 // seg006:16CE
-void draw_hurt_splash() {
-	short frame = Char.frame;
-	if (frame != frame_178_chomped) { // chomped
+void __pascal far draw_hurt_splash() {
+	short frame;
+	frame = Char.frame;
+	if (frame != 178) { // chomped
 		save_obj();
 		obj_tilepos = -1;
 		// frame 185: dead
 		// frame 106..110: fall + land
-		if (frame == frame_185_dead || (frame>= frame_106_fall && frame<111)) {
+		if (frame == 185 || (frame>=106 && frame<111)) {
 			obj_y += 4;
 			obj_dx_forward(5);
-		} else if (frame == frame_177_spiked) { // spiked
+		} else if (frame == 177) { // spiked
 			obj_dx_forward(-5);
 		} else {
 			obj_y -= ((Char.charid == charid_0_kid) << 2) + 11;
@@ -2030,13 +1788,13 @@ void draw_hurt_splash() {
 }
 
 // seg006:175D
-void check_killed_shadow() {
+void __pascal far check_killed_shadow() {
 	// Special event: killed the shadow
 	if (current_level == 12) {
 		if ((Char.charid | Opp.charid) == charid_1_shadow &&
 			Char.alive < 0 && Opp.alive >= 0
 		) {
-			flash_color = color_15_brightwhite; // white
+			flash_color = 15; // white
 			flash_time = 5;
 			take_hp(100);
 		}
@@ -2099,13 +1857,15 @@ const sword_table_type sword_tbl[] = {
 };
 
 // seg006:1798
-void add_sword_to_objtable() {
-	short frame = Char.frame;
-	if ((frame >= frame_229_found_sword && frame < 238) || // found sword + put sword away
-		Char.sword != sword_0_sheathed ||
+void __pascal far add_sword_to_objtable() {
+	short frame;
+	short sword_frame;
+	frame = Char.frame;
+	if ((frame >= 229 && frame < 238) || // found sword + put sword away
+		Char.sword != 0 ||
 		(Char.charid == charid_2_guard && Char.alive < 0)
 	) {
-		short sword_frame = cur_frame.sword & 0x3F;
+		sword_frame = cur_frame.sword & 0x3F;
 		if (sword_frame) {
 			obj_id = sword_tbl[sword_frame].id;
 			if (obj_id != 0xFF) {
@@ -2120,25 +1880,26 @@ void add_sword_to_objtable() {
 }
 
 // seg006:1827
-void control_guard_inactive() {
-	if (Char.frame == frame_166_stand_inactive && control_down == CONTROL_HELD) {
-		if (control_forward == CONTROL_HELD) {
+void __pascal far control_guard_inactive() {
+	if (Char.frame == 166 && control_down < 0) {
+		if (control_forward < 0) {
 			draw_sword();
 		} else {
-			control_down = CONTROL_IGNORE;
-			seqtbl_offset_char(seq_80_stand_flipped); // stand flipped
+			control_down = 1;
+			seqtbl_offset_char(80); // stand flipped
 		}
 	}
 }
 
 // seg006:1852
-int char_opp_dist() {
+int __pascal far char_opp_dist() {
 	// >0 if Opp is in front of char
 	// <0 if Opp is behind char
+	short distance;
 	if (Char.room != Opp.room) {
 		return 999;
 	}
-	short distance = Opp.x - Char.x;
+	distance = Opp.x - Char.x;
 	if (Char.direction < dir_0_right) {
 		distance = -distance;
 	}
@@ -2149,6 +1910,6 @@ int char_opp_dist() {
 }
 
 // seg006:189B
-void inc_curr_row() {
+void __pascal far inc_curr_row() {
 	++Char.curr_row;
 }
