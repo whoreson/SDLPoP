@@ -2,6 +2,46 @@
 
 An open-source port of Prince of Persia, based on the disassembly of the DOS version, extended with new features.
 
+## iPhone OS 1.0 Port
+
+This fork contains fixes and patches to enable SDLPoP to run on **iPhone OS 1.0** (original iPhone).
+
+### Status
+
+The game is fully playable on iPhone OS 1.0 with the following characteristics:
+
+* **Video:** 320x200 game surface displayed in landscape orientation, rendered via LayerKit.
+* **Touch input:** 8-directional D-pad + center (Shift) mapped from touch coordinates.
+* **Audio:** Not available. MIDI music and digitized sound effects do not play due to limitations in initializing the audio subsystem on iPhone OS 1.0 (calling `SDL_INIT_AUDIO` causes a kernel crash). Speaker sounds work via timer callbacks.
+* **No remaining bugs:** The port is stable with no crashes or hangs.
+
+### Key Fixes Applied
+
+* **Timer:** Replaced `setitimer`/`SIGALRM` with `CFRunLoopTimer`-based threaded timer.
+* **Data loading:** Fixed `open_dat()` to detect directories vs files using `fstat`/`S_ISDIR`.
+* **Struct packing:** GCC 4.0.1 LLVM backend ignores `#pragma pack(push,1)`; fixed with raw byte access for `note_type`, `speaker_type`, and `digi_type` structs.
+* **Assembly intermediate step:** Strips `mcr p15`/`bkpt` instructions that cause crashes on the original iPhone.
+* **Touch coordinate transform:** Window coordinates (320x480 portrait) correctly transformed to game surface coordinates (320x200 landscape).
+* **pthreads:** Semaphore implemented using mutex/condvar since `sem_init` is non-functional.
+* **AudioQueue driver:** Implemented but cannot be used due to SDL initialization crash (see above).
+
+### Build
+
+Use `Makefile.iphoneos1` with the ARMv6 cross-compiler (GCC 4.0.1 LLVM backend for iPhone OS 1.0).
+
+### Known Limitations
+
+1. **No MIDI sound** - The audio subsystem cannot be initialized via `SDL_INIT_AUDIO` without causing a kernel crash.
+2. **No digitized sound effects** - Same reason as above (`digi_unavailable=1`).
+3. **Title screens advance instantly** - Sound-waiting loops skip when audio is unavailable.
+
+### Build Notes
+
+* Cross-compile on PPC Mac OS X 10.4 Tiger with `arm-apple-darwin-gcc`.
+* Assembly intermediate step required to strip invalid instructions.
+* Data files deployed in directory mode (`data/*.DAT/`).
+* AudioToolbox framework linked for AudioQueue driver (not currently usable).
+
 ## Links
 
 * Forum board: https://forum.princed.org/viewforum.php?f=126
